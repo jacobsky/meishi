@@ -15,7 +15,8 @@ func (s *Server) RegisterRoutes() http.Handler {
 	fileServer := http.FileServer(http.FS(web.Files))
 	mux.Handle("/assets/", fileServer)
 	mux.Handle("/web", templ.Handler(web.HelloForm()))
-	mux.HandleFunc("/", web.HelloWebHandler)
+	mux.Handle("/", templ.Handler(web.Home()))
+	mux.Handle("/scout", templ.Handler(web.Scout()))
 
 	// Wrap the mux with CORS middleware
 	return s.corsMiddleware(mux)

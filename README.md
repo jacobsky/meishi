@@ -1,8 +1,8 @@
-# Recruit Me
+# Scout Me
 
 A sibling project to [zoubun](github.com/jacobsky/zoubun), this is a project where the primary motivation is to get comfortable with the go ecosystem.
 
-In this case, the goal is to create a hypermedia driven application that sends me emails based on a slightly fancier form.
+In this case, the goal is to create a hypermedia driven microblog/portfolio application that sends me emails with exactly the information that I can about when being scouted.
 
 For speed, the project's structure was created using the [go-blueprint](https://github.com/Melkeydev/go-blueprint) tool.
 

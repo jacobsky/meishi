@@ -1,0 +1,77 @@
+package web
+
+templ Home() {
+@Layout("Home") {
+<h1>About Me</h1>
+<article>
+    <p>
+        I am a Software engineering with a wide array of experience professionally. I am located in Japan and am always
+        open to hearing about opportuniesi. Please feel free to contact me if you think I'd be a
+        good fit for your team using the Scout link about.
+    </p>
+    <details>
+        <summary>Notable Roles </summary>
+        <details>
+            <ul>
+                <li>Firmware Device Application Engineer</li>
+                <li>Application Development Engineer</li>
+                <li>Cloud AI/Machine Learning Technical Support Engineer </li>
+            </ul>
+        </details>
+    </details>
+    <details>
+        <summary>Preferred Roles</summary>
+        <ul>
+            <li>Application Development</li>
+            <li>Reliability Engineering</li>
+            <li>Web Development</li>
+            <li>Backend Development</li>
+            <li>Games Development</li>
+        </ul>
+    </details>
+    <details>
+        <summary>Skills </summary>
+        <ul>
+            <li>C </li>
+            <li>Rust </li>
+            <li>Golang </li>
+            <li>Docker </li>
+            <li>Hypermedia</li>
+            <li>SQL </li>
+            <li>Linux/WSL </li>
+            <li>AI Agents/Prompt Engineering (regrettably)</li>
+        </ul>
+    </details>
+</article>
+}
+}
+
+templ Scout() {
+@Layout("Scout Me") {
+<h1>
+    Contact me
+</h1>
+// TODO: Complete the actual action using hypermedia
+<form>
+    <label for="name">Your Name</label>
+    <input type="text" name="name" id="name" />
+    <label for="email">Contact Email</label>
+    <input type="email" name="email" id="email" />
+    <label for="position">Position</label>
+    <input type="text" name="position" id="position" />
+    <label for="name">Brief Description </label>
+    <input type="text" name="description" id="description" />
+    <label for="skills">Has Preferred Skills </label>
+    for _, item := range []string { "rust", "golang", "c#", "html/css", "htmx", "javascript"} {
+    <input type="checkbox" id={ item } name={ item } value={ item } />
+    <label for={ item }>{ item }</label>
+    }
+    <label for="skills">Has Preferred Skills </label>
+    for _, item := range []string { "git", "docker", "linux", "cloud services", "hypermedia" } {
+    <input type="checkbox" id={ item } name={ item } value={ item } />
+    <label for={ item }>{ item }</label>
+    }
+    <input type="submit" value="Contact me" />
+</form>
+}
+}
