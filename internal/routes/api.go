@@ -1,4 +1,4 @@
-package server
+package routes
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ var MAILER_FROM_ACCOUNT = os.Getenv("MAILER_FROM_ACCOUNT")
 var MAILER_TO_ACCOUNT = os.Getenv("MAILER_TO_ACCOUNT")
 var MAILER_FROM_PASSWORD = os.Getenv("MAILER_FROM_PASSWORD")
 
-func sendScoutMail(resp http.ResponseWriter, req *http.Request) {
+func SendScoutMail(resp http.ResponseWriter, req *http.Request) {
 	fmt.Println("sendScoutMail - Start!")
 	// Create a new message
 	message := gomail.NewMessage()

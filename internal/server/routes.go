@@ -2,26 +2,27 @@ package server
 
 import (
 	"net/http"
-
-	"recruitme/cmd/web"
+	"os"
+	"recruitme/internal/routes"
 
 	"github.com/a-h/templ"
+	"github.com/gorilla/csrf"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
 	mux := http.NewServeMux()
 
 	// Register routes
-	fileServer := http.FileServer(http.FS(web.Files))
+	fileServer := http.FileServer(http.FS(Files))
 	mux.Handle("/assets/", fileServer)
-	mux.Handle("/web", templ.Handler(web.HelloForm()))
-	mux.Handle("/", templ.Handler(web.Home()))
-	mux.Handle("/scout", templ.Handler(web.Scout()))
-	mux.HandleFunc("/scoutme", sendScoutMail)
-	mux.Handle("/scouted", templ.Handler(web.Scouted()))
+	mux.Handle("/", templ.Handler(routes.Home()))
+	mux.Handle("/scout", routes.NewHandler())
+	mux.HandleFunc("/scoutme", routes.SendScoutMail)
+	mux.Handle("/scouted", templ.Handler(routes.Scouted()))
 
-	// Wrap the mux with CORS middleware
-	return s.corsMiddleware(mux)
+	CSRF := csrf.Protect([]byte(os.Getenv("CSRF_KEY")))
+	// Wrap the mux with CORS middleware and the CSRF middleware
+	return CSRF(s.corsMiddleware(mux))
 }
 
 func (s *Server) corsMiddleware(next http.Handler) http.Handler {

@@ -1,4 +1,4 @@
-package web
+package layout
 
 // func HelloWebHandler(w http.ResponseWriter, r *http.Request) {
 // 	err := r.ParseForm()

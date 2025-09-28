@@ -1,0 +1,50 @@
+package routes
+
+import (
+	z "github.com/Oudwins/zog"
+	layout "recruitme/internal/layout"
+)
+
+templ inputComponent(inputType string, inputLabel string, inputName string, inputValue string, inputErr z.ZogIssueMap) {
+	<label for={ inputName }>{ inputLabel }</label>
+	<input
+		required
+		type={ inputType }
+		name={ inputName }
+		id={ inputName }
+		value={ inputValue }
+		if _, ok := inputErr[inputName]; ok {
+			aria-invalid="true"
+		}
+	/>
+	if e, ok := inputErr[inputName]; ok {
+		<small>{ e[0].Message }</small>
+	}
+}
+
+templ Scout(data *ScoutMeModel, errs z.ZogIssueMap) {
+	@layout.Layout("Scout Me") {
+		<h1>
+			Contact me
+		</h1>
+		// TODO: Complete the actual action using hypermedia
+		<form>
+			@inputComponent("text", "Your Name", "name", data.Name, errs)
+			@inputComponent("email", "Your Email Address", "email", data.Email, errs)
+			@inputComponent("text", "Position", "position", data.Position, errs)
+			@inputComponent("text", "Brief Description", "description", data.Description, errs)
+			@inputComponent("link", "Link to Position Info", "link", data.Link, errs)
+			<input type="hidden" name="_csrf" value={ ctx.Value("gorilla.csrf.Token").(string) }/>
+			<input type="submit" value="Contact me"/>
+		</form>
+	}
+}
+
+templ Scouted() {
+	@layout.Layout("Thank you!") {
+		<h1>
+			Thank you!
+		</h1>
+		<p>I will do my best to reach out to you as soon as I have a chance to review it!</p>
+	}
+}

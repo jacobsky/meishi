@@ -1,0 +1,50 @@
+package routes
+
+import layout "recruitme/internal/layout"
+
+templ Home() {
+	@layout.Layout("Home") {
+		<h1>About Me</h1>
+		<article>
+			<p>
+				I am a Software engineering with a wide array of experience professionally. I am located in Japan and am always
+				open to hearing about opportuniesi. Please feel free to contact me if you think I'd be a
+				good fit for your team using the Scout link about.
+			</p>
+			<details>
+				<summary>Notable Roles </summary>
+				<details>
+					<ul>
+						<li>Firmware Device Application Engineer</li>
+						<li>Application Development Engineer</li>
+						<li>Cloud AI/Machine Learning Technical Support Engineer </li>
+					</ul>
+				</details>
+			</details>
+			<details>
+				<summary>Preferred Roles</summary>
+				<ul>
+					<li>Application Development</li>
+					<li>Reliability Engineering</li>
+					<li>Web Development</li>
+					<li>Backend Development</li>
+					<li>Games Development</li>
+				</ul>
+			</details>
+			<details>
+				<summary>Skills </summary>
+				<ul>
+					<li>C </li>
+					<li>Rust </li>
+					<li>Golang </li>
+					<li>HTML/CSS</li>
+					<li>Docker </li>
+					<li>Hypermedia</li>
+					<li>SQL </li>
+					<li>Linux/WSL </li>
+					<li>AI Agents/prompt Engineering (regrettably)</li>
+				</ul>
+			</details>
+		</article>
+	}
+}
