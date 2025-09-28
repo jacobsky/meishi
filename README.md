@@ -6,6 +6,12 @@ In this case, the goal is to create a hypermedia driven microblog/portfolio appl
 
 For speed, the project's structure was created using the [go-blueprint](https://github.com/Melkeydev/go-blueprint) tool.
 
+## Stack
+
+- *Frontend*: Alpine.js (UI interactivity) + HTMX (backend interactivity)
+- *Styling*: Tailwind + Pines (components) + picocss classless (base)
+- *Backend*: Golang + Temple
+
 ## Goals
 - [ ] Configure HTMX, TailwindCSS, Golang and Templ to create a reasonably presentable landing page.
 - [ ] Using a flowing form, send me a well formatted email notifying me of a potential position.
