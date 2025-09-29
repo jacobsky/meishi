@@ -22,19 +22,33 @@ templ inputComponent(inputType string, inputLabel string, inputName string, inpu
 	}
 }
 
+templ comboBox(name string, label string, levels []string) {
+	<label for={ name }>{ label }</label>
+	<select name={ name } id={ name }>
+		for _, level := range levels {
+			<option value={ level }>{ level }</option>
+		}
+	</select>
+}
+
 templ Scout(data *ScoutMeModel, errs z.ZogIssueMap) {
 	@layout.Layout("Scout Me") {
 		<h1>
 			Contact me
 		</h1>
-		// TODO: Complete the actual action using hypermedia
-		<form>
+		<form method="post" hx-boost="true">
 			@inputComponent("text", "Your Name", "name", data.Name, errs)
 			@inputComponent("email", "Your Email Address", "email", data.Email, errs)
+			@comboBox("level", "Level", []string{
+				"Junior", "Mid-level", "Senior",
+			},
+			)
+			@inputComponent("text", "Company Name", "company", data.Company, errs)
 			@inputComponent("text", "Position", "position", data.Position, errs)
 			@inputComponent("text", "Brief Description", "description", data.Description, errs)
 			@inputComponent("link", "Link to Position Info", "link", data.Link, errs)
-			<input type="hidden" name="_csrf" value={ ctx.Value("gorilla.csrf.Token").(string) }/>
+			@layout.FormCSRF()
+			<!-- <input type="hidden" name="_csrf" value={ ctx.Value("gorilla.csrf.Token").(string) }/> -->
 			<input type="submit" value="Contact me"/>
 		</form>
 	}

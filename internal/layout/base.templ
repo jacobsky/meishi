@@ -14,12 +14,18 @@ templ Header(title string) {
 	</head>
 }
 
+templ NavLink(label string, link string) {
+	<li>
+		<a href={ link } hx-boost="true">{ label } </a>
+	</li>
+}
+
 templ Nav() {
 	<nav style="base">
 		<ul>
 			<li><strong>Jacobsky is Apparently Typing</strong></li>
-			<li><a href="/">Home</a> </li>
-			<li><a href="/scout">Scout</a> </li>
+			@NavLink("Home", "/")
+			@NavLink("Scoutme", "/scout")
 		</ul>
 	</nav>
 }
@@ -42,4 +48,8 @@ templ Footer() {
 	<footer>
 		<p>Copyright (c) 2025 Jacobsky. All Rights Reserved.</p>
 	</footer>
+}
+
+templ FormCSRF() {
+	<input type="hidden" name="_csrf" value={ ctx.Value("gorilla.csrf.Token").(string) }/>
 }

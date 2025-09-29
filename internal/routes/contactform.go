@@ -12,19 +12,19 @@ type ScoutMeModel struct {
 	Email       string
 	Position    string
 	Level       string
-	CompanyName string
+	Company     string
 	Description string
 	Link        string
 }
 
 var ScoutSchema = z.Struct(z.Shape{
-	"name":         z.String().Required().Min(4),
-	"email":        z.String().Required().Email(),
-	"position":     z.String().Required(),
-	"level":        z.String().Required(),
-	"company_name": z.String().Required(),
-	"description":  z.String().Required().Min(10),
-	"link":         z.String().Required().URL(),
+	"name":        z.String().Required().Min(4),
+	"email":       z.String().Required().Email(),
+	"position":    z.String().Required(),
+	"level":       z.String().Required(),
+	"company":     z.String().Required(),
+	"description": z.String().Required().Min(10),
+	"link":        z.String().Required().URL(),
 },
 )
 
@@ -33,6 +33,7 @@ type Handler struct{}
 func NewHandler() http.Handler {
 	return &Handler{}
 }
+
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
@@ -40,7 +41,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		v := templ.Handler(Scout(&m, z.ZogIssueMap{}))
 		v.ServeHTTP(w, r)
 	case http.MethodPost:
-
+		SendScoutMail(w, r)
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
