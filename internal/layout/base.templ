@@ -1,5 +1,7 @@
 package layout
 
+import "github.com/invopop/ctxi18n/i18n"
+
 templ Header(title string) {
 	<head>
 		<title>
@@ -9,6 +11,7 @@ templ Header(title string) {
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<meta name="color-sheme" content="light dark"/>
 		<link href="assets/css/output.css" rel="stylesheet"/>
+		<script src="https://cdn.jsdelivr.net/npm/theme-change@2.0.2/index.js"></script>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.classless.min.css"/>
 		<script src="assets/js/htmx.min.js"></script>
 	</head>
@@ -16,25 +19,28 @@ templ Header(title string) {
 
 templ NavLink(label string, link string) {
 	<li>
-		<a href={ link } hx-boost="true">{ label } </a>
+		<a href={ link } hx-boost="true">{ i18n.T(ctx, label) } </a>
 	</li>
 }
 
 templ Nav() {
 	<nav style="base">
 		<ul>
-			<li><strong>Jacobsky is Apparently Typing</strong></li>
+			<li><strong>{ i18n.T(ctx, "Jacobsky is Apparently Typing") }</strong></li>
 			@NavLink("Home", "/")
-			@NavLink("Scoutme", "/scout")
+			@NavLink("Scout Me", "/scout")
 		</ul>
 	</nav>
 }
 
 templ Layout(title string) {
 	<!DOCTYPE html>
-	<html lang="en" class="h-screen">
+	<html lang="en" data-set-theme="dark">
 		@Header(title)
 		<body>
+			<!-- <button data-set-theme="synthwave" data-act-class="ACTIVECLASS">Toggle</button> -->
+			<!-- <button data-set-theme="light" data-act-class="ACTIVECLASS">Toggle</button> -->
+			<!-- <button data-set-theme="dark" data-act-class="ACTIVECLASS">Toggle</button> -->
 			@Nav()
 			<main>
 				{ children... }

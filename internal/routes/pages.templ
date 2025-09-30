@@ -1,6 +1,9 @@
 package routes
 
-import layout "recruitme/internal/layout"
+import (
+	"github.com/invopop/ctxi18n/i18n"
+	layout "recruitme/internal/layout"
+)
 
 templ Details(summary string, list_items []string) {
 	<details>
@@ -15,45 +18,50 @@ templ Details(summary string, list_items []string) {
 
 templ Home() {
 	@layout.Layout("Home") {
-		<h1>About Me</h1>
-		<article>
+		<h1></h1>
+		<section>
+			<h2>{ i18n.T(ctx, "About Me") }</h2>
 			<p>
-				I am a Software engineering with a wide array of experience professionally. I am located in Japan and am always
-				open to hearing about opportunies. Please feel free to contact me if you think I'd be a
-				good fit for your team using the Scout link above.
+				{ i18n.T(ctx, "introduction") }
 			</p>
+		</section>
+		<section>
+			<h2>Projects</h2>
+		</section>
+		<section>
+			<h2>Experience and Roles</h2>
 			@Details(
-				"Notable Roles",
+				i18n.T(ctx, "Notable Roles"),
 				[]string{
-					"Firmware Device Application Engineer",
-					"Application Development Engineer",
-					"Cloud AI/Machine Learning Technical Support Engineer",
+					i18n.T(ctx, "Firmware Device Application Engineer"),
+					i18n.T(ctx, "Application Development Engineer"),
+					i18n.T(ctx, "Cloud AI/Machine Learning Technical Support Engineer"),
 				},
 			)
 			@Details(
-				"Preferred Roles",
+				i18n.T(ctx, "Preferred Roles"),
 				[]string{
-					"Application Development",
-					"Reliability Engineering",
-					"Web Development",
-					"Backend Development",
-					"Games Development",
+					i18n.T(ctx, "Application Development"),
+					i18n.T(ctx, "Reliability Engineering"),
+					i18n.T(ctx, "Web Development"),
+					i18n.T(ctx, "Backend Development"),
+					i18n.T(ctx, "Games Development"),
 				},
 			)
 			@Details(
-				"Skills",
+				i18n.T(ctx, "Skills"),
 				[]string{
 					"C ",
 					"Rust ",
 					"Golang ",
 					"HTML/CSS",
 					"Docker ",
-					"Hypermedia",
+					i18n.T(ctx, "Hypermedia"),
 					"SQL ",
 					"Linux/WSL ",
-					"AI Agents/prompt Engineering (regrettably)",
+					i18n.T(ctx, "AI Agents/prompt Engineering"),
 				},
 			)
-		</article>
+		</section>
 	}
 }

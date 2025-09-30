@@ -1,7 +1,8 @@
-package routes
+package contact
 
 import (
 	z "github.com/Oudwins/zog"
+	"github.com/invopop/ctxi18n/i18n"
 	layout "recruitme/internal/layout"
 )
 
@@ -37,19 +38,21 @@ templ Scout(data *ScoutMeModel, errs z.ZogIssueMap) {
 			Contact me
 		</h1>
 		<form method="post" hx-boost="true">
-			@inputComponent("text", "Your Name", "name", data.Name, errs)
-			@inputComponent("email", "Your Email Address", "email", data.Email, errs)
+			@inputComponent("text", i18n.T(ctx, "Your Name"), "name", data.Name, errs)
+			@inputComponent("email", i18n.T(ctx, "Your Email Address"), "email", data.Email, errs)
 			@comboBox("level", "Level", []string{
-				"Junior", "Mid-level", "Senior",
+				i18n.T(ctx, "Junior"),
+				i18n.T(ctx, "Mid-level"),
+				i18n.T(ctx, "Senior"),
 			},
 			)
-			@inputComponent("text", "Company Name", "company", data.Company, errs)
-			@inputComponent("text", "Position", "position", data.Position, errs)
-			@inputComponent("text", "Brief Description", "description", data.Description, errs)
-			@inputComponent("link", "Link to Position Info", "link", data.Link, errs)
+			@inputComponent("text", i18n.T(ctx, "Company Name"), "company", data.Company, errs)
+			@inputComponent("text", i18n.T(ctx, "Position"), "position", data.Position, errs)
+			@inputComponent("text", i18n.T(ctx, "Brief Description"), "description", data.Description, errs)
+			@inputComponent("link", i18n.T(ctx, "Link to Position Info"), "link", data.Link, errs)
 			@layout.FormCSRF()
 			<!-- <input type="hidden" name="_csrf" value={ ctx.Value("gorilla.csrf.Token").(string) }/> -->
-			<input type="submit" value="Contact me"/>
+			<input type="submit" value={ i18n.T(ctx, "Contact me") }/>
 		</form>
 	}
 }
@@ -57,8 +60,8 @@ templ Scout(data *ScoutMeModel, errs z.ZogIssueMap) {
 templ Scouted() {
 	@layout.Layout("Thank you!") {
 		<h1>
-			Thank you!
+			{ i18n.T(ctx, "Thank you!") }
 		</h1>
-		<p>I will do my best to reach out to you as soon as I have a chance to review it!</p>
+		<p>{ i18n.T(ctx, "I will do my best to reach out to you as soon as I have a chance to review it!") }</p>
 	}
 }

@@ -2,23 +2,34 @@ package server
 
 import (
 	"crypto/rand"
+	"log/slog"
 	"net/http"
 	"recruitme/internal/routes"
+	contact "recruitme/internal/routes/contactme"
+	"strings"
 
 	"github.com/a-h/templ"
 	"github.com/gorilla/csrf"
+	"github.com/invopop/ctxi18n"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
-	mux := http.NewServeMux()
+	// If loading fails, app should crash
+	if err := ctxi18n.Load(Locales); err != nil {
+		panic(err)
+	}
 
 	// Register routes
+	mux := http.NewServeMux()
 	fileServer := http.FileServer(http.FS(Files))
 	mux.Handle("/assets/", fileServer)
 	mux.Handle("/", templ.Handler(routes.Home()))
-	mux.Handle("/scout", routes.NewHandler())
-	mux.HandleFunc("POST /scoutme", routes.SendScoutMail)
-	mux.Handle("GET /scouted", templ.Handler(routes.Scouted()))
+	// TODO: Add micro blog functionality
+	// mux.Handle("/blog", templ.Handler(routes.BlogPost()))
+	mux.Handle("/scout", contact.NewHandler())
+	mux.HandleFunc("POST /scoutme", contact.SendScoutMail)
+	mux.Handle("GET /scouted", templ.Handler(contact.Scouted()))
+	middle := i18nmiddleware(mux)
 	csrfKey := generateCSRFKey()
 	csrfMiddleware := csrf.Protect(
 		csrfKey,
@@ -27,7 +38,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 		csrf.FieldName("_csrf"),
 	)
 	// Wrap the mux with CORS middleware and the CSRF middleware
-	return csrfMiddleware(s.corsMiddleware(mux))
+	return csrfMiddleware(s.corsMiddleware(middle))
 }
 func generateCSRFKey() []byte {
 	// Make a random 32 bit key for this application run.
@@ -41,6 +52,24 @@ func generateCSRFKey() []byte {
 	}
 	return key
 }
+
+func i18nmiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		lang := "en" // default language
+		pathSegments := strings.Split(r.URL.Path, "/")
+		// The local path will always be the first after "/" such as "/en-US/"
+		if len(pathSegments) > 1 {
+			lang = pathSegments[1]
+		}
+		ctx, err := ctxi18n.WithLocale(r.Context(), lang)
+		if err != nil {
+			slog.Error("Error setting local", "Error", err)
+			http.Error(w, "Error setting local", http.StatusBadRequest)
+		}
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
 func (s *Server) corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Set CORS headers

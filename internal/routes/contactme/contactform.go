@@ -1,4 +1,5 @@
-package routes
+// Package contact API for consumption
+package contact
 
 import (
 	"net/http"
