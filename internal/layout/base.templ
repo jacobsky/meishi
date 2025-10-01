@@ -1,6 +1,9 @@
 package layout
 
-import "github.com/invopop/ctxi18n/i18n"
+import (
+	"github.com/invopop/ctxi18n/i18n"
+	"strings"
+)
 
 templ Header(title string) {
 	<head>
@@ -10,16 +13,16 @@ templ Header(title string) {
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<meta name="color-sheme" content="light dark"/>
-		<link href="assets/css/output.css" rel="stylesheet"/>
+		<link href="/assets/css/output.css" rel="stylesheet"/>
 		<script src="https://cdn.jsdelivr.net/npm/theme-change@2.0.2/index.js"></script>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.classless.min.css"/>
-		<script src="assets/js/htmx.min.js"></script>
+		<script src="/assets/js/htmx.min.js"></script>
 	</head>
 }
 
-templ NavLink(label string, link string) {
+templ NavLink(label, link, locale string) {
 	<li>
-		<a href={ link } hx-boost="true">{ i18n.T(ctx, label) } </a>
+		<a href={ strings.Join([]string{"/", locale, link}, "") } hx-boost="true">{ i18n.T(ctx, label) } </a>
 	</li>
 }
 
@@ -27,8 +30,9 @@ templ Nav() {
 	<nav style="base">
 		<ul>
 			<li><strong>{ i18n.T(ctx, "Jacobsky is Apparently Typing") }</strong></li>
-			@NavLink("Home", "/")
-			@NavLink("Scout Me", "/scout")
+			@NavLink("Home", "/", string(i18n.GetLocale(ctx).Code()))
+			@NavLink("Scout Me", "/scout", string(i18n.GetLocale(ctx).Code()))
+			)
 		</ul>
 	</nav>
 }

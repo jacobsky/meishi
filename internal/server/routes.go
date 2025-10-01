@@ -14,22 +14,29 @@ import (
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
+	// TODO: Switch the router to gorilla/mux for wildcard matching and subroutes
 	// If loading fails, app should crash
 	if err := ctxi18n.Load(Locales); err != nil {
 		panic(err)
 	}
 
 	// Register routes
-	mux := http.NewServeMux()
-	fileServer := http.FileServer(http.FS(Files))
-	mux.Handle("/assets/", fileServer)
-	mux.Handle("/", templ.Handler(routes.Home()))
+	webmux := http.NewServeMux()
+	webmux.Handle("/", templ.Handler(routes.Home()))
 	// TODO: Add micro blog functionality
 	// mux.Handle("/blog", templ.Handler(routes.BlogPost()))
-	mux.Handle("/scout", contact.NewHandler())
-	mux.HandleFunc("POST /scoutme", contact.SendScoutMail)
-	mux.Handle("GET /scouted", templ.Handler(contact.Scouted()))
-	middle := i18nmiddleware(mux)
+	webmux.Handle("/scout", contact.NewHandler())
+	webmux.Handle("GET /scouted", templ.Handler(contact.Scouted()))
+
+	rootmux := http.NewServeMux()
+	fileServer := http.FileServer(http.FS(Files))
+
+	rootmux.Handle("/assets/", fileServer)
+	rootmux.Handle("/", http.RedirectHandler("/en/", http.StatusPermanentRedirect))
+	rootmux.Handle("/en/", http.StripPrefix("/en", webmux))
+	rootmux.Handle("/jp/", http.StripPrefix("/jp", webmux))
+
+	// Handle middlewares
 	csrfKey := generateCSRFKey()
 	csrfMiddleware := csrf.Protect(
 		csrfKey,
@@ -38,7 +45,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 		csrf.FieldName("_csrf"),
 	)
 	// Wrap the mux with CORS middleware and the CSRF middleware
-	return csrfMiddleware(s.corsMiddleware(middle))
+	return csrfMiddleware(s.corsMiddleware(i18nmiddleware(rootmux)))
 }
 func generateCSRFKey() []byte {
 	// Make a random 32 bit key for this application run.
@@ -56,11 +63,15 @@ func generateCSRFKey() []byte {
 func i18nmiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		lang := "en" // default language
-		pathSegments := strings.Split(r.URL.Path, "/")
 		// The local path will always be the first after "/" such as "/en-US/"
+		slog.Info("i18nmiddleware checking path", "path", r.URL.Path)
+		pathSegments := strings.Split(r.URL.Path, "/")
 		if len(pathSegments) > 1 {
 			lang = pathSegments[1]
+		} else {
+			r.URL.Path = "/en" + r.URL.Path
 		}
+
 		ctx, err := ctxi18n.WithLocale(r.Context(), lang)
 		if err != nil {
 			slog.Error("Error setting local", "Error", err)
