@@ -35,5 +35,6 @@ main
 
 # Tailwind CSS
 internal/server/assets/css/output.css
+node_modules/
 tailwindcss
 

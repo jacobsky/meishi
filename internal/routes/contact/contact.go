@@ -8,7 +8,7 @@ import (
 	"github.com/a-h/templ"
 )
 
-type ScoutMeModel struct {
+type ContactModel struct {
 	Name        string
 	Email       string
 	Position    string
@@ -18,7 +18,7 @@ type ScoutMeModel struct {
 	Link        string
 }
 
-var ScoutSchema = z.Struct(z.Shape{
+var ContactSchema = z.Struct(z.Shape{
 	"name":        z.String().Required().Min(4),
 	"email":       z.String().Required().Email(),
 	"position":    z.String().Required(),
@@ -38,11 +38,11 @@ func NewHandler() http.Handler {
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		m := ScoutMeModel{}
-		v := templ.Handler(Scout(&m, z.ZogIssueMap{}))
+		m := ContactModel{}
+		v := templ.Handler(Contact(&m, z.ZogIssueMap{}))
 		v.ServeHTTP(w, r)
 	case http.MethodPost:
-		SendScoutMail(w, r)
+		SendMail(w, r)
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}

@@ -18,7 +18,7 @@ jp:
   AI Agents/prompt Engineering: "AI エージェントやプロムト開発"
   Your Name: "名前"
   Your Email Address: "メールアドレス"
-  Junior: "小級レベルJunior"
+  Junior: "小級レベル"
   Mid-level: "中級レベル"
   Senior: "大級レベル"
   Company Name: "会社名"
@@ -28,6 +28,12 @@ jp:
   Contact me: "送信"
   Thank you!: "ご連絡いただき、誠にありがとうございます！"
   I will do my best to reach out to you as soon as I have a chance to review it!: "私はレビューしてから、すぐお返事します！"
+  contact_discription: TODO - Currently, I am open to being contacted regarding open positions if you think my skills match your company. Please fill out the following form
+  Company Co, Ltd.: 何とか株式会社
+  Frontend Development: フロントエンド開発
+  Embedded/Firmware Development Engineer: ファームウェア開発
+  Systems Engineering: システム開発
+  Other (please note in the Brief description): Other (please note in the Brief description)
   introduction: >2
     TODO: Translate
     I am a Software engineering with a wide array of experience professionally. I am located in Japan and am always open to hearing about opportunies. Please feel free to contact me if you think I'd be a good fit for your team using the Scout link above.

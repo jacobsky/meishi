@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"recruitme/internal/routes"
-	contact "recruitme/internal/routes/contactme"
+	"recruitme/internal/routes/contact"
 	"strings"
 
 	"github.com/a-h/templ"
@@ -25,8 +25,8 @@ func (s *Server) RegisterRoutes() http.Handler {
 	webmux.Handle("/", templ.Handler(routes.Home()))
 	// TODO: Add micro blog functionality
 	// mux.Handle("/blog", templ.Handler(routes.BlogPost()))
-	webmux.Handle("/scout", contact.NewHandler())
-	webmux.Handle("GET /scouted", templ.Handler(contact.Scouted()))
+	webmux.Handle("/contact", contact.NewHandler())
+	webmux.Handle("GET /contactcomplete", contact.NewHandler())
 
 	rootmux := http.NewServeMux()
 	fileServer := http.FileServer(http.FS(Files))
@@ -47,6 +47,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	// Wrap the mux with CORS middleware and the CSRF middleware
 	return csrfMiddleware(s.corsMiddleware(i18nmiddleware(rootmux)))
 }
+
 func generateCSRFKey() []byte {
 	// Make a random 32 bit key for this application run.
 	key := make([]byte, 32)
@@ -64,7 +65,7 @@ func i18nmiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		lang := "en" // default language
 		// The local path will always be the first after "/" such as "/en-US/"
-		slog.Info("i18nmiddleware checking path", "path", r.URL.Path)
+		slog.Debug("i18nmiddleware checking path", "path", r.URL.Path)
 		pathSegments := strings.Split(r.URL.Path, "/")
 		if len(pathSegments) > 1 {
 			lang = pathSegments[1]

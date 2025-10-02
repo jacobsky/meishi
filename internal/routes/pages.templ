@@ -18,50 +18,51 @@ templ Details(summary string, list_items []string) {
 
 templ Home() {
 	@layout.Layout("Home") {
-		<h1></h1>
-		<section>
-			<h2>{ i18n.T(ctx, "About Me") }</h2>
-			<p>
-				{ i18n.T(ctx, "introduction") }
-			</p>
-		</section>
-		<section>
-			<h2>Projects</h2>
-		</section>
-		<section>
-			<h2>Experience and Roles</h2>
-			@Details(
-				i18n.T(ctx, "Notable Roles"),
-				[]string{
-					i18n.T(ctx, "Firmware Device Application Engineer"),
-					i18n.T(ctx, "Application Development Engineer"),
-					i18n.T(ctx, "Cloud AI/Machine Learning Technical Support Engineer"),
-				},
-			)
-			@Details(
-				i18n.T(ctx, "Preferred Roles"),
-				[]string{
-					i18n.T(ctx, "Application Development"),
-					i18n.T(ctx, "Reliability Engineering"),
-					i18n.T(ctx, "Web Development"),
-					i18n.T(ctx, "Backend Development"),
-					i18n.T(ctx, "Games Development"),
-				},
-			)
-			@Details(
-				i18n.T(ctx, "Skills"),
-				[]string{
-					"C ",
-					"Rust ",
-					"Golang ",
-					"HTML/CSS",
-					"Docker ",
-					i18n.T(ctx, "Hypermedia"),
-					"SQL ",
-					"Linux/WSL ",
-					i18n.T(ctx, "AI Agents/prompt Engineering"),
-				},
-			)
-		</section>
+		<div class="prose">
+			<section>
+				<h2>{ i18n.T(ctx, "About Me") }</h2>
+				<p>
+					{ i18n.T(ctx, "introduction") }
+				</p>
+			</section>
+			<section>
+				<h2>Projects</h2>
+			</section>
+			<section>
+				<h2>Experience and Roles</h2>
+				@Details(
+					i18n.T(ctx, "Notable Roles"),
+					[]string{
+						i18n.T(ctx, "Firmware Device Application Engineer"),
+						i18n.T(ctx, "Application Development Engineer"),
+						i18n.T(ctx, "Cloud AI/Machine Learning Technical Support Engineer"),
+					},
+				)
+				@Details(
+					i18n.T(ctx, "Preferred Roles"),
+					[]string{
+						i18n.T(ctx, "Application Development"),
+						i18n.T(ctx, "Reliability Engineering"),
+						i18n.T(ctx, "Web Development"),
+						i18n.T(ctx, "Backend Development"),
+						i18n.T(ctx, "Games Development"),
+					},
+				)
+				@Details(
+					i18n.T(ctx, "Skills"),
+					[]string{
+						"C ",
+						"Rust ",
+						"Golang ",
+						"HTML/CSS",
+						"Docker ",
+						i18n.T(ctx, "Hypermedia"),
+						"SQL ",
+						"Linux/WSL ",
+						i18n.T(ctx, "AI Agents/prompt Engineering"),
+					},
+				)
+			</section>
+		</div>
 	}
 }

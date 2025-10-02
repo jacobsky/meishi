@@ -1,0 +1,96 @@
+package contact
+
+import (
+	z "github.com/Oudwins/zog"
+	"github.com/invopop/ctxi18n/i18n"
+	layout "recruitme/internal/layout"
+)
+
+templ inputComponent(inputType, inputLabel, inputName, inputValue, placeholder string, inputErr z.ZogIssueMap) {
+	<label class="label" for={ inputName }>{ inputLabel }</label>
+	<input
+		class="input validator"
+		required
+		type={ inputType }
+		name={ inputName }
+		id={ inputName }
+		value={ inputValue }
+		placeholder={ placeholder }
+		if _, ok := inputErr[inputName]; ok {
+			aria-invalid="true"
+		}
+	/>
+	if e, ok := inputErr[inputName]; ok {
+		<small class="validator-hint">{ e[0].Message }</small>
+	}
+}
+
+templ comboBox(name string, label string, levels []string) {
+	<label class="label" for={ name }>{ label }</label>
+	<select class="select" name={ name } id={ name }>
+		for _, level := range levels {
+			<option value={ level }>{ level }</option>
+		}
+	</select>
+}
+
+templ Contact(data *ContactModel, errs z.ZogIssueMap) {
+	@layout.Layout("Contact Me") {
+		<h2>Contact me</h2>
+		<form method="post" hx-boost="true" class="form-control">
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">
+					<p>{ i18n.T(ctx, "contact_discription") }</p>
+				</legend>
+				@inputComponent("text",
+					i18n.T(ctx, "Your Name"),
+					"name",
+					data.Name,
+					i18n.T(ctx, "Your Name"),
+					errs,
+				)
+				@inputComponent("email",
+					i18n.T(ctx, "Your Email Address"),
+					"email",
+					data.Email,
+					"email@example.com",
+					errs,
+				)
+				@comboBox("level", "Level", []string{
+					i18n.T(ctx, "Junior"),
+					i18n.T(ctx, "Mid-level"),
+					i18n.T(ctx, "Senior"),
+				},
+				)
+				@inputComponent("text", i18n.T(ctx, "Company Name"), "company", data.Company, i18n.T(ctx, "Company Co, Ltd."), errs)
+				@comboBox("text", i18n.T(ctx, "Position"), []string{
+					i18n.T(ctx, "Games Development"),
+					i18n.T(ctx, "Frontend Development"),
+					i18n.T(ctx, "Backend Development"),
+					i18n.T(ctx, "Application Development Engineer"),
+					i18n.T(ctx, "Embedded/Firmware Development Engineer"),
+					i18n.T(ctx, "Systems Engineering"),
+					i18n.T(ctx, "Other (please note in the Brief description)"),
+				},
+				)
+				@inputComponent("text", i18n.T(ctx, "Brief Description"), "description", data.Description, "", errs)
+				@inputComponent("link", i18n.T(ctx, "Link to Position Info"), "link", data.Link, "http://www.example.com", errs)
+				@layout.FormCSRF()
+				<input
+					class="btn"
+					type="submit"
+					value={ i18n.T(ctx, "Contact me") }
+				/>
+			</fieldset>
+		</form>
+	}
+}
+
+templ ContactComplete() {
+	@layout.Layout("Thank you!") {
+		<h1>
+			{ i18n.T(ctx, "Thank you!") }
+		</h1>
+		<p>{ i18n.T(ctx, "I will do my best to reach out to you as soon as I have a chance to review it!") }</p>
+	}
+}
