@@ -21,7 +21,7 @@ en:
   Junior: "Junior"
   Mid-level: "Mid-level"
   Senior: "Senior"
-  Company Name: "Company Name"
+  Company Name: Company Name
   Position: "Position"
   Brief Description: "Brief Description"
   Link to Position Info: "Link to Position Info"
@@ -29,7 +29,8 @@ en:
   Thank you!: "Thank you!"
   I will do my best to reach out to you as soon as I have a chance to review it!: "I will do my best to reach out to you as soon as I have a chance to review it!"
   contact_discription: Currently, I am open to being contacted regarding open positions if you think my skills match your company. Please fill out the following form
-  Company Co, Ltd.: Company Co, Ltd.
+  OfficialCompanyName: Company Co, Ltd.
+  I confirm that the above information is correct: Please confirm that the above information is correct before sending.
   Frontend Development: Frontend Development
   Embedded/Firmware Development Engineer: Embedded/Firmware Development Engineer
   Systems Engineering: Systems Engineering

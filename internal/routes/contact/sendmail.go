@@ -17,14 +17,14 @@ var toAccount = os.Getenv("MAILER_TO_ACCOUNT")
 
 func SendMail(resp http.ResponseWriter, req *http.Request) {
 
-	slog.Info("Sending Scout Mail")
+	slog.Debug("Sending Scout Mail")
 	err := req.ParseForm()
 	if err != nil {
 		http.Error(resp, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	slog.Info("Parsing form")
+	slog.Debug("Parsing form")
 	model := ContactModel{
 		Name:        req.PostForm.Get("name"),
 		Email:       req.PostForm.Get("email"),
@@ -34,7 +34,7 @@ func SendMail(resp http.ResponseWriter, req *http.Request) {
 		Description: req.PostForm.Get("description"),
 		Link:        req.PostForm.Get("link"),
 	}
-	slog.Info("Validating form")
+	slog.Debug("Validating form")
 	errs := ContactSchema.Validate(&model)
 	// If errors we need to head back to the form
 	if len(errs) > 0 {
@@ -82,13 +82,14 @@ func SendMail(resp http.ResponseWriter, req *http.Request) {
 	// Set up the SMTP dialer
 	dialer := gomail.NewDialer("smtp.gmail.com", 587, fromAccount, fromAccountPassword)
 
-	slog.Info("Sending to dialer")
+	slog.Debug("Sending to dialer")
 	// Send the email
 	if err := dialer.DialAndSend(message); err != nil {
 		slog.Error("Error: %v", "error", err)
+		v := templ.Handler(Contact(&model, errs))
+		v.ServeHTTP(resp, req)
 	} else {
 		slog.Debug("HTML Email sent successfully!")
 	}
-	slog.Debug("Redirecting to /contactcomplete")
-	http.Redirect(resp, req, "/contactcomplete", http.StatusSeeOther)
+	templ.Handler(ContactComplete()).ServeHTTP(resp, req)
 }

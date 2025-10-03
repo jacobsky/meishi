@@ -18,7 +18,7 @@ templ Details(summary string, list_items []string) {
 
 templ Home() {
 	@layout.Layout("Home") {
-		<div class="prose">
+		<div>
 			<section>
 				<h2>{ i18n.T(ctx, "About Me") }</h2>
 				<p>

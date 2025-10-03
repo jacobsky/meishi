@@ -7,39 +7,49 @@ import (
 )
 
 templ inputComponent(inputType, inputLabel, inputName, inputValue, placeholder string, inputErr z.ZogIssueMap) {
-	<label class="label" for={ inputName }>{ inputLabel }</label>
+	<label for={ inputName }>{ inputLabel }</label>
 	<input
-		class="input validator"
 		required
 		type={ inputType }
 		name={ inputName }
 		id={ inputName }
 		value={ inputValue }
 		placeholder={ placeholder }
+		:readonly="confirmed"
 		if _, ok := inputErr[inputName]; ok {
 			aria-invalid="true"
+			aria-describedby={ inputName + "validation-helper" }
 		}
 	/>
 	if e, ok := inputErr[inputName]; ok {
-		<small class="validator-hint">{ e[0].Message }</small>
+		<small id={ inputName + "validation-helper" }>{ e[0].Message }</small>
 	}
 }
 
 templ comboBox(name string, label string, levels []string) {
-	<label class="label" for={ name }>{ label }</label>
-	<select class="select" name={ name } id={ name }>
+	<label for={ name }>{ label }</label>
+	<select
+		name={ name }
+		id={ name }
+		:readonly="confirmed"
+	>
 		for _, level := range levels {
 			<option value={ level }>{ level }</option>
 		}
 	</select>
 }
 
+// TODO: Htmx-ifify this form
 templ Contact(data *ContactModel, errs z.ZogIssueMap) {
 	@layout.Layout("Contact Me") {
 		<h2>Contact me</h2>
-		<form method="post" hx-boost="true" class="form-control">
-			<fieldset class="fieldset">
-				<legend class="fieldset-legend">
+		<form
+			method="post"
+			hx-boost="true"
+			x-data="{confirmed: false, submitting: true}"
+		>
+			<fieldset>
+				<legend>
 					<p>{ i18n.T(ctx, "contact_discription") }</p>
 				</legend>
 				@inputComponent("text",
@@ -62,8 +72,8 @@ templ Contact(data *ContactModel, errs z.ZogIssueMap) {
 					i18n.T(ctx, "Senior"),
 				},
 				)
-				@inputComponent("text", i18n.T(ctx, "Company Name"), "company", data.Company, i18n.T(ctx, "Company Co, Ltd."), errs)
-				@comboBox("text", i18n.T(ctx, "Position"), []string{
+				@inputComponent("text", i18n.T(ctx, "Company Name"), "company", data.Company, i18n.T(ctx, "OfficialCompanyName"), errs)
+				@comboBox("position", i18n.T(ctx, "Position"), []string{
 					i18n.T(ctx, "Games Development"),
 					i18n.T(ctx, "Frontend Development"),
 					i18n.T(ctx, "Backend Development"),
@@ -76,8 +86,12 @@ templ Contact(data *ContactModel, errs z.ZogIssueMap) {
 				@inputComponent("text", i18n.T(ctx, "Brief Description"), "description", data.Description, "", errs)
 				@inputComponent("link", i18n.T(ctx, "Link to Position Info"), "link", data.Link, "http://www.example.com", errs)
 				@layout.FormCSRF()
+				<label for="confirmation">{ i18n.T(ctx, "I confirm that the above information is correct") } </label>
+				// TODO: Update this to double check the validation.
+				<input role="switch" type="checkbox" id="confirmation" x-model="confirmed"/>
+				// TODO: Show some kind of proxy for the actual sending of the email (it takes a bit of time)
 				<input
-					class="btn"
+					x-bind:disabled="!confirmed"
 					type="submit"
 					value={ i18n.T(ctx, "Contact me") }
 				/>
@@ -92,5 +106,6 @@ templ ContactComplete() {
 			{ i18n.T(ctx, "Thank you!") }
 		</h1>
 		<p>{ i18n.T(ctx, "I will do my best to reach out to you as soon as I have a chance to review it!") }</p>
+		<a href="/">Back to Top</a>
 	}
 }

@@ -29,7 +29,8 @@ jp:
   Thank you!: "ご連絡いただき、誠にありがとうございます！"
   I will do my best to reach out to you as soon as I have a chance to review it!: "私はレビューしてから、すぐお返事します！"
   contact_discription: TODO - Currently, I am open to being contacted regarding open positions if you think my skills match your company. Please fill out the following form
-  Company Co, Ltd.: 何とか株式会社
+  OfficialCompanyName: Company Co, Ltd.
+  I confirm that the above information is correct: 上記の情報は正しいと確認しました。
   Frontend Development: フロントエンド開発
   Embedded/Firmware Development Engineer: ファームウェア開発
   Systems Engineering: システム開発
