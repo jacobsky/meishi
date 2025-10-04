@@ -2,6 +2,7 @@
 package contact
 
 import (
+	"log/slog"
 	"net/http"
 
 	z "github.com/Oudwins/zog"
@@ -39,11 +40,42 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		m := ContactModel{}
-		v := templ.Handler(Contact(&m, z.ZogIssueMap{}))
-		v.ServeHTTP(w, r)
+		templ.Handler(Contact(&m, z.ZogIssueMap{})).ServeHTTP(w, r)
 	case http.MethodPost:
-		SendMail(w, r)
+		err := r.ParseForm()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		slog.Info("Validating Scheme")
+		model := validateSchema(w, r)
+		if model != nil {
+			SendMail(w, r, model)
+		}
+
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
+}
+
+func validateSchema(w http.ResponseWriter, r *http.Request) *ContactModel {
+
+	model := ContactModel{
+		Name:        r.PostForm.Get("name"),
+		Email:       r.PostForm.Get("email"),
+		Position:    r.PostForm.Get("position"),
+		Level:       r.PostForm.Get("level"),
+		Company:     r.PostForm.Get("company"),
+		Description: r.PostForm.Get("description"),
+		Link:        r.PostForm.Get("link"),
+	}
+	slog.Debug("Validating form")
+	errs := ContactSchema.Validate(&model)
+	// If errors we need to head back to the form
+	if len(errs) > 0 {
+		slog.Info("Model was not parsed correctly: ", "Model Values", model, "Schema Errors", errs)
+		templ.Handler(Contact(&model, errs)).ServeHTTP(w, r)
+		return nil
+	}
+	return &model
 }

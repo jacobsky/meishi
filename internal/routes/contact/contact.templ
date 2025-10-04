@@ -1,28 +1,41 @@
 package contact
 
 import (
+	"fmt"
 	z "github.com/Oudwins/zog"
 	"github.com/invopop/ctxi18n/i18n"
 	layout "recruitme/internal/layout"
 )
 
 templ inputComponent(inputType, inputLabel, inputName, inputValue, placeholder string, inputErr z.ZogIssueMap) {
-	<label for={ inputName }>{ inputLabel }</label>
-	<input
-		required
-		type={ inputType }
-		name={ inputName }
-		id={ inputName }
-		value={ inputValue }
-		placeholder={ placeholder }
-		:readonly="confirmed"
-		if _, ok := inputErr[inputName]; ok {
-			aria-invalid="true"
-			aria-describedby={ inputName + "validation-helper" }
-		}
-	/>
-	if e, ok := inputErr[inputName]; ok {
-		<small id={ inputName + "validation-helper" }>{ e[0].Message }</small>
+	@templ.Fragment("inputName") {
+		<div
+			id={ fmt.Sprintf("%v_parent", inputName) }
+		>
+			<label for={ inputName }>{ inputLabel }</label>
+			<input
+				required
+				type={ inputType }
+				name={ inputName }
+				id={ inputName }
+				value={ inputValue }
+				placeholder={ placeholder }
+				hx-post={ fmt.Sprintf("/%v/contact", i18n.GetLocale(ctx).Code()) }
+				hx-params={ fmt.Sprintf("%v, _csrf", inputName) }
+				hx-trigger="input changed delay:2s"
+				hx-target={ fmt.Sprintf("#%v_parent", inputName) }
+				hx-select={ fmt.Sprintf("#%v_parent", inputName) }
+				hx-swap="outerHTML"
+				:readonly="confirmed"
+				if _, ok := inputErr[inputName]; ok {
+					aria-invalid="true"
+					aria-describedby={ inputName + "validation-helper" }
+				}
+			/>
+			if e, ok := inputErr[inputName]; ok {
+				<small id={ inputName + "validation-helper" }>{ e[0].Message }</small>
+			}
+		</div>
 	}
 }
 
@@ -45,6 +58,7 @@ templ Contact(data *ContactModel, errs z.ZogIssueMap) {
 		<h2>Contact me</h2>
 		<form
 			method="post"
+			hx-post={ "/" + i18n.GetLocale(ctx).Code() + "/contact" }
 			hx-boost="true"
 			x-data="{confirmed: false, submitting: true}"
 		>
