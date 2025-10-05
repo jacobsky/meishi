@@ -71,7 +71,15 @@ func validateSchema(w http.ResponseWriter, r *http.Request) *ContactModel {
 	}
 	slog.Debug("Validating form")
 	errs := ContactSchema.Validate(&model)
-	// If errors we need to head back to the form
+	// HTMX optimization using fragments.
+	// Whenever there is an HX-Trigger-Name for this endpoint,
+	// we know that there's a fragment of the same name and can send only that.
+	if fragmentName := r.Header.Get("HX-Trigger-Name"); fragmentName != "" {
+		slog.Info("Returning with fragments", "HX-Trigger-Name", fragmentName)
+		templ.Handler(Contact(&model, errs), templ.WithFragments(fragmentName)).ServeHTTP(w, r)
+		return nil
+	}
+
 	if len(errs) > 0 {
 		slog.Info("Model was not parsed correctly: ", "Model Values", model, "Schema Errors", errs)
 		templ.Handler(Contact(&model, errs)).ServeHTTP(w, r)

@@ -8,35 +8,31 @@ import (
 )
 
 templ inputComponent(inputType, inputLabel, inputName, inputValue, placeholder string, inputErr z.ZogIssueMap) {
-	@templ.Fragment("inputName") {
-		<div
-			id={ fmt.Sprintf("%v_parent", inputName) }
-		>
-			<label for={ inputName }>{ inputLabel }</label>
-			<input
-				required
-				type={ inputType }
-				name={ inputName }
-				id={ inputName }
-				value={ inputValue }
-				placeholder={ placeholder }
-				hx-post={ fmt.Sprintf("/%v/contact", i18n.GetLocale(ctx).Code()) }
-				hx-params={ fmt.Sprintf("%v, _csrf", inputName) }
-				hx-trigger="input changed delay:2s"
-				hx-target={ fmt.Sprintf("#%v_parent", inputName) }
-				hx-select={ fmt.Sprintf("#%v_parent", inputName) }
-				hx-swap="outerHTML"
-				:readonly="confirmed"
-				if _, ok := inputErr[inputName]; ok {
-					aria-invalid="true"
-					aria-describedby={ inputName + "validation-helper" }
-				}
-			/>
-			if e, ok := inputErr[inputName]; ok {
-				<small id={ inputName + "validation-helper" }>{ e[0].Message }</small>
+	<div id={ fmt.Sprintf("%v_parent", inputName) }>
+		<label for={ inputName }>{ inputLabel }</label>
+		<input
+			required
+			type={ inputType }
+			name={ inputName }
+			id={ inputName }
+			value={ inputValue }
+			placeholder={ placeholder }
+			hx-post={ fmt.Sprintf("/%v/contact", i18n.GetLocale(ctx).Code()) }
+			hx-params={ fmt.Sprintf("%v, _csrf", inputName) }
+			hx-trigger="input changed delay:2s"
+			hx-target="closest div"
+			hx-select={ fmt.Sprintf("#%v_parent", inputName) }
+			hx-swap="outerHTML"
+			:readonly="confirmed"
+			if _, ok := inputErr[inputName]; ok {
+				aria-invalid="true"
+				aria-describedby={ inputName + "validation-helper" }
 			}
-		</div>
-	}
+		/>
+		if e, ok := inputErr[inputName]; ok {
+			<small id={ inputName + "validation-helper" }>{ e[0].Message }</small>
+		}
+	</div>
 }
 
 templ comboBox(name string, label string, levels []string) {
@@ -52,13 +48,15 @@ templ comboBox(name string, label string, levels []string) {
 	</select>
 }
 
-// TODO: Htmx-ifify this form
 templ Contact(data *ContactModel, errs z.ZogIssueMap) {
 	@layout.Layout("Contact Me") {
 		<h2>Contact me</h2>
 		<form
 			method="post"
 			hx-post={ "/" + i18n.GetLocale(ctx).Code() + "/contact" }
+			hx-target="closest main"
+			hx-select="#content"
+			hx-swap="outerHTML"
 			hx-boost="true"
 			x-data="{confirmed: false, submitting: true}"
 		>
@@ -66,27 +64,33 @@ templ Contact(data *ContactModel, errs z.ZogIssueMap) {
 				<legend>
 					<p>{ i18n.T(ctx, "contact_discription") }</p>
 				</legend>
-				@inputComponent("text",
-					i18n.T(ctx, "Your Name"),
-					"name",
-					data.Name,
-					i18n.T(ctx, "Your Name"),
-					errs,
-				)
-				@inputComponent("email",
-					i18n.T(ctx, "Your Email Address"),
-					"email",
-					data.Email,
-					"email@example.com",
-					errs,
-				)
+				@templ.Fragment("name") {
+					@inputComponent("text",
+						i18n.T(ctx, "Your Name"),
+						"name",
+						data.Name,
+						i18n.T(ctx, "Your Name"),
+						errs,
+					)
+				}
+				@templ.Fragment("email") {
+					@inputComponent("email",
+						i18n.T(ctx, "Your Email Address"),
+						"email",
+						data.Email,
+						"email@example.com",
+						errs,
+					)
+				}
 				@comboBox("level", "Level", []string{
 					i18n.T(ctx, "Junior"),
 					i18n.T(ctx, "Mid-level"),
 					i18n.T(ctx, "Senior"),
 				},
 				)
-				@inputComponent("text", i18n.T(ctx, "Company Name"), "company", data.Company, i18n.T(ctx, "OfficialCompanyName"), errs)
+				@templ.Fragment("company") {
+					@inputComponent("text", i18n.T(ctx, "Company Name"), "company", data.Company, i18n.T(ctx, "OfficialCompanyName"), errs)
+				}
 				@comboBox("position", i18n.T(ctx, "Position"), []string{
 					i18n.T(ctx, "Games Development"),
 					i18n.T(ctx, "Frontend Development"),
@@ -97,8 +101,12 @@ templ Contact(data *ContactModel, errs z.ZogIssueMap) {
 					i18n.T(ctx, "Other (please note in the Brief description)"),
 				},
 				)
-				@inputComponent("text", i18n.T(ctx, "Brief Description"), "description", data.Description, "", errs)
-				@inputComponent("link", i18n.T(ctx, "Link to Position Info"), "link", data.Link, "http://www.example.com", errs)
+				@templ.Fragment("description") {
+					@inputComponent("text", i18n.T(ctx, "Brief Description"), "description", data.Description, "", errs)
+				}
+				@templ.Fragment("link") {
+					@inputComponent("link", i18n.T(ctx, "Link to Position Info"), "link", data.Link, "http://www.example.com", errs)
+				}
 				@layout.FormCSRF()
 				<label for="confirmation">{ i18n.T(ctx, "I confirm that the above information is correct") } </label>
 				// TODO: Update this to double check the validation.
