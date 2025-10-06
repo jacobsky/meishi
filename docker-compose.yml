@@ -7,6 +7,14 @@ services:
     restart: unless-stopped
     ports:
       - ${PORT}:${PORT}
+    env_file: 
+      - path: ./.env
+        required: false
     environment:
       APP_ENV: ${APP_ENV}
       PORT: ${PORT}
+      MAILER_FROM_ACCOUNT: ${MAILER_FROM_ACCOUNT}
+      MAILER_TO_ACCOUNT: ${MAILER_TO_ACCOUNT}
+      MAILER_FROM_PASSWORD: ${MAILER_FROM_PASSWORD}
+      MAIL_SERVICE_ENDPOINT: ${MAIL_SERVICE_ENDPOINT}
+      MAIL_SERVICE_PORT: ${MAIL_SERVICE_PORT}

@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/a-h/templ"
 	"gopkg.in/gomail.v2"
@@ -14,6 +15,8 @@ import (
 var fromAccount = os.Getenv("MAILER_FROM_ACCOUNT")
 var fromAccountPassword = os.Getenv("MAILER_FROM_PASSWORD")
 var toAccount = os.Getenv("MAILER_TO_ACCOUNT")
+var mailServiceEndpoint = os.Getenv("MAIL_SERVICE_ENDPOINT")
+var mailServicePort, _ = strconv.Atoi(os.Getenv("MAIL_SERVICE_PORT"))
 
 func SendMail(resp http.ResponseWriter, req *http.Request, model *ContactModel) {
 
@@ -56,7 +59,7 @@ func SendMail(resp http.ResponseWriter, req *http.Request, model *ContactModel) 
 	message.SetBody("text/html", body)
 	slog.Debug("Creating dialer")
 	// Set up the SMTP dialer
-	dialer := gomail.NewDialer("smtp.gmail.com", 587, fromAccount, fromAccountPassword)
+	dialer := gomail.NewDialer(mailServiceEndpoint, mailServicePort, fromAccount, fromAccountPassword)
 
 	slog.Debug("Sending to dialer")
 	// Send the email
