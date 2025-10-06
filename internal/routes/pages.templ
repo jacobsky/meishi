@@ -1,67 +1,102 @@
 package routes
 
-import (
-	"github.com/invopop/ctxi18n/i18n"
-	layout "recruitme/internal/layout"
-)
+import layout "recruitme/internal/layout"
+
+templ InformationalAccordion(title string, description ...string) {
+	<details name="info_accordion">
+		<summary>
+			{ title }
+		</summary>
+		<article>
+			{ children... }
+		</article>
+	</details>
+}
 
 templ Details(summary string, list_items []string) {
-	<details>
+	<details name="details_accordion">
 		<summary>{ summary }</summary>
-		<ul>
+		<article>
 			for _, item := range list_items {
-				<li>{ item }</li>
+				{ item }
+				<br/>
 			}
-		</ul>
+		</article>
 	</details>
 }
 
 templ Home() {
 	@layout.Layout("Home") {
-		<div>
-			<section>
-				<h2>{ i18n.T(ctx, "About Me") }</h2>
+		<section>
+			<article>
+				<header>Nice to meet you, I am Jacobsky.</header>
+				<h4>Currently looking for work</h4>
 				<p>
-					{ i18n.T(ctx, "introduction") }
+					I am a Veteran Engineer with expertise across a wide array of technologies and discplines. 
+					<br/>
+					Recently started my 10th year in the IT industry looking to take on my 5th role and looking for the best place to ply my skills.
+					<br/>
+					From small staups to infrastructure providers that power the world with an AI transformation, I have a broad vision and understanding of the industry and can fit into any team well.
+					<br/>
+					I am always looking for a new and exciting challenge, if you think you have something that would interest me given my skillset, "Scout Me" link above
 				</p>
+				<hr/>
+				<p>
+					My personal projects can be found on <a href="www.github.com/jacobsky">github</a>.
+					<br/>
+					My most recent projects focus on Golang and hypermedia.
+				</p>
+			</article>
+		</section>
+		<div class="grid">
+			<section>
+				<h2>Prior Experience and Roles</h2>
+				@InformationalAccordion(
+					"Firmware Device Engineer",
+				) {
+					<p>
+						Worked as a junior level engineer for various embedded systems ranging from localized battery management systems to control the reliability of charging and discharing, building and configuring an embedded Web-based UI for Management Observability and logging.
+					</p>
+					<h5>Skills</h5>
+					<p>Embedded C/C++, Linux, Nginx, Sqlite, Php stacp, Dotnet based Webservices.</p>
+				}
+				@InformationalAccordion(
+					"Embedded Systems Engineer",
+				) {
+					<p>
+						Worked as a mid-level engineer for Printer technology including the firmware of printheads, internal print engine reliability and implementing a hardware abstraction layer for reliability testing.
+						Built internal tooling for actively tracking and documenting feature flags utilized by individual device SKUs.
+					</p>
+					<h5>Skills</h5>
+					<p>Embedded C/C++, Linux, Python, SQL, Micro-controller tooling.</p>
+				}
+				@InformationalAccordion("Application Engineer") {
+					<p>Worked as a developer of customer facing applications and frameworks for use with specialized authentication devices.</p>
+					<h5>Skills</h5>
+					<p>C#-based Dotnet Presentation Frameworks, Python, and Docker for cloud deployment</p>
+				}
+				@InformationalAccordion("Cloud AI/Machine Learning Technical Support Engineer") {
+					<p>Worked as a Technical Support engineer for Cloud based AI and IoT services. This was a customer facing role that revolved both user education as well as deep technical troubleshooting and collaboration to resolve any and every issue related to the service.</p>
+					<h5>Skills</h5>
+					<p>C, C#, Python, Javascript knowledge used for troubleshooting SDKs. Azure Networking, Docker/Kubernetes, LLM Prompt Engineering and Agentic AI development</p>
+				}
 			</section>
 			<section>
-				<h2>Projects</h2>
-			</section>
-			<section>
-				<h2>Experience and Roles</h2>
-				@Details(
-					i18n.T(ctx, "Notable Roles"),
-					[]string{
-						i18n.T(ctx, "Firmware Device Application Engineer"),
-						i18n.T(ctx, "Application Development Engineer"),
-						i18n.T(ctx, "Cloud AI/Machine Learning Technical Support Engineer"),
-					},
-				)
-				@Details(
-					i18n.T(ctx, "Preferred Roles"),
-					[]string{
-						i18n.T(ctx, "Application Development"),
-						i18n.T(ctx, "Reliability Engineering"),
-						i18n.T(ctx, "Web Development"),
-						i18n.T(ctx, "Backend Development"),
-						i18n.T(ctx, "Games Development"),
-					},
-				)
-				@Details(
-					i18n.T(ctx, "Skills"),
-					[]string{
-						"C ",
-						"Rust ",
-						"Golang ",
-						"HTML/CSS",
-						"Docker ",
-						i18n.T(ctx, "Hypermedia"),
-						"SQL ",
-						"Linux/WSL ",
-						i18n.T(ctx, "AI Agents/prompt Engineering"),
-					},
-				)
+				<h2>Technologies</h2>
+				@Details("Programming Languages", []string{
+					"C, C#, Golang, Rust, Python, SQL, HLSL",
+				})
+				@Details("Operating Systems", []string{
+					"Windows", "Linux (Redhat/Ubuntu/Arch)", "WSL (arch)",
+				})
+				@Details("Technology Stacks", []string{
+					"Games: Godot + Rust",
+					"Web: Golang + Templ + HTMX + HTML/CSS + SQL",
+					"CLI: Rust or Go",
+				})
+				@Details("Tools", []string{
+					"Neovim", "Git", "Github Actions", "Docker", "LLMs, Prompt Engineering, Agentic AI",
+				})
 			</section>
 		</div>
 	}

@@ -14,7 +14,6 @@ import (
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
-	// TODO: Switch the router to gorilla/mux for wildcard matching and subroutes
 	// If loading fails, app should crash
 	if err := ctxi18n.Load(Locales); err != nil {
 		panic(err)

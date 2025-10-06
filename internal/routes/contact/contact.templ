@@ -19,7 +19,7 @@ templ inputComponent(inputType, inputLabel, inputName, inputValue, placeholder s
 			placeholder={ placeholder }
 			hx-post={ fmt.Sprintf("/%v/contact", i18n.GetLocale(ctx).Code()) }
 			hx-params={ fmt.Sprintf("%v, _csrf", inputName) }
-			hx-trigger="input changed delay:2s"
+			hx-trigger="input changed delay:1s"
 			hx-target="closest div"
 			hx-select={ fmt.Sprintf("#%v_parent", inputName) }
 			hx-swap="outerHTML"
@@ -37,11 +37,7 @@ templ inputComponent(inputType, inputLabel, inputName, inputValue, placeholder s
 
 templ comboBox(name string, label string, levels []string) {
 	<label for={ name }>{ label }</label>
-	<select
-		name={ name }
-		id={ name }
-		:readonly="confirmed"
-	>
+	<select name={ name } id={ name } :readonly="confirmed">
 		for _, level := range levels {
 			<option value={ level }>{ level }</option>
 		}

@@ -1,8 +1,8 @@
 package layout
 
 import (
+	"fmt"
 	"github.com/invopop/ctxi18n/i18n"
-	"strings"
 )
 
 templ Head(title string) {
@@ -22,14 +22,16 @@ templ Head(title string) {
 }
 
 templ Theme() {
-	<button data-x @click="if ( theme == 'light' ) { theme='dark'} else { theme = 'light' }">
-		<template data-x x-if="theme=='light'">
-			<strong>月</strong>
-		</template>
-		<template data-x x-if="theme=='dark'">
-			<strong>日</strong>
-		</template>
-	</button>
+	<template data-x x-if="theme=='light'">
+		<button data-x @click="if ( theme == 'light' ) { theme='dark'} else { theme = 'light' }">
+			月
+		</button>
+	</template>
+	<template data-x x-if="theme=='dark'">
+		<button data-x @click="if ( theme == 'light' ) { theme='dark'} else { theme = 'light' }">
+			日
+		</button>
+	</template>
 }
 
 // Creates the component used to toggle the language between english and japanese
@@ -44,17 +46,18 @@ templ Language() {
 
 templ NavLink(label, link, locale string) {
 	<li>
-		<a class="btn text-xl" id={ locale + link } href={ strings.Join([]string{"/", locale, link}, "") } hx-boost="true">{ i18n.T(ctx, label) } </a>
+		<a id={ locale + link } href={ fmt.Sprintf("/%v/%v", locale, link) } hx-boost="true">{ i18n.T(ctx, label) } </a>
 	</li>
 }
 
 templ Nav() {
-	<nav>
+	<nav class="container" style="position: sticky">
+		<ul>
+			<strong>Apparently Typing</strong>
+		</ul>
 		<ul>
 			@NavLink("Home", "/", string(i18n.GetLocale(ctx).Code()))
 			@NavLink("Scout Me", "/contact", string(i18n.GetLocale(ctx).Code()))
-		</ul>
-		<ul>
 			<li>
 				@Language()
 			</li>
@@ -75,10 +78,7 @@ templ Layout(title string) {
 	>
 		@Head(title)
 		<body>
-			<header>
-				<h1>Apparently Typing</h1>
-				@Nav()
-			</header>
+			@Nav()
 			<main class="container" id="content">
 				{ children... }
 			</main>
@@ -88,7 +88,7 @@ templ Layout(title string) {
 }
 
 templ Footer() {
-	<footer>
+	<footer class="container">
 		<p>
 			This site is powered by <a href="https://go.dev/">golang</a> and <a href="https://github.com/a-h/templ">templ</a> on the backend;
 			<a href="https://htmx.org/">HTMX</a> and <a href="https://alpinejs.dev/">alpinejs</a> on the frontend; and styled using <a href="https://picocss.com">picocss.</a>
