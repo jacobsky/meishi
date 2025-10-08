@@ -33,6 +33,6 @@ jobs:
         with:
           push: true
           context: .
-          tags: ghcr.io/${{github.repository}}:latest,ghcr.io/${{github.repository}}:${{github.ref_name}}
+          tags: ghcr.io/${{github.repository}}:latest,ghcr.io/${{github.repository}}:${{github.ref_name}},ghcr.io/${{github.repository}}:${{github.sha}}
           file: Dockerfile
           platforms: linux/amd64
