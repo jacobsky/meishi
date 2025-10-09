@@ -19,10 +19,10 @@ For speed, the project's structure was created using the [go-blueprint](https://
 - [x] Add internationalization that can be easily toggled and loaded via middleware
     - [x] en-US base site
     - [x] ja-JP translated site
-- [ ] Frontend polish
-    - [ ] Customize the tailwind theme
-    - [ ] Work in alpine JS for the necessary pizzazz
-    - [ ] Add in some HTMX hooks for form validation
+- [x] Frontend polish
+    - [x] Customize the tailwind theme
+    - [x] Work in alpine JS for the necessary pizzazz
+    - [x] Add in some HTMX hooks for form validation
 - [ ] Build an automatic tool/script to update the translator yaml entries
 - [ ] Setup a route for a "Microblog" that I can use to publish my own periodic blog posts
 

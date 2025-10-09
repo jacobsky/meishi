@@ -1,6 +1,9 @@
 package routes
 
-import layout "recruitme/internal/layout"
+import (
+	"github.com/invopop/ctxi18n/i18n"
+	layout "recruitme/internal/layout"
+)
 
 templ InformationalAccordion(title string, description ...string) {
 	<details name="info_accordion">
@@ -28,74 +31,67 @@ templ Details(summary string, list_items []string) {
 templ Home() {
 	@layout.Layout("Home") {
 		<section>
-			<article>
-				<header>Nice to meet you, I am Jacobsky.</header>
-				<h4>Currently looking for work</h4>
-				<p>
-					I am a Veteran Engineer with expertise across a wide array of technologies and discplines. 
-					<br/>
-					Recently started my 10th year in the IT industry looking to take on my 5th role and looking for the best place to ply my skills.
-					<br/>
-					From small staups to infrastructure providers that power the world with an AI transformation, I have a broad vision and understanding of the industry and can fit into any team well.
-					<br/>
-					I am always looking for a new and exciting challenge, if you think you have something that would interest me given my skillset, "Scout Me" link above
-				</p>
-				<hr/>
-				<p>
-					My personal projects can be found on <a href="www.github.com/jacobsky">github</a>.
-					<br/>
-					My most recent projects focus on Golang and hypermedia.
-				</p>
-			</article>
+			<h2>{ i18n.T(ctx, "info.intro_header") }</h2>
+			<p>
+				{ i18n.T(ctx, "info.intro_body") }
+			</p>
+			<hr/>
+			<p>
+				{ i18n.T(ctx, "info.intro_projects") }
+				<a href="www.github.com/jacobsky">github</a>.
+			</p>
 		</section>
 		<div class="grid">
 			<section>
-				<h2>Prior Experience and Roles</h2>
+				<h2>{ i18n.T(ctx, "info.Prior Experience and Roles") }</h2>
 				@InformationalAccordion(
-					"Firmware Device Engineer",
+					i18n.T(ctx, "info.Firmware Device Engineer"),
 				) {
 					<p>
-						Worked as a junior level engineer for various embedded systems ranging from localized battery management systems to control the reliability of charging and discharing, building and configuring an embedded Web-based UI for Management Observability and logging.
+						{ i18n.T(ctx, "info.firmwareengineer") }
 					</p>
-					<h5>Skills</h5>
-					<p>Embedded C/C++, Linux, Nginx, Sqlite, Php stacp, Dotnet based Webservices.</p>
+					<h5>{ i18n.T(ctx, "Skills") }</h5>
+					<p>{ i18n.T(ctx, "Embedded") } C/C++, Linux, Nginx, Sqlite, Php stacp, Dotnet.</p>
 				}
 				@InformationalAccordion(
-					"Embedded Systems Engineer",
+					i18n.T(ctx, "info.Embedded Systems Engineer"),
 				) {
 					<p>
-						Worked as a mid-level engineer for Printer technology including the firmware of printheads, internal print engine reliability and implementing a hardware abstraction layer for reliability testing.
-						Built internal tooling for actively tracking and documenting feature flags utilized by individual device SKUs.
+						{ i18n.T(ctx, "info.embeddedengineer") }
 					</p>
-					<h5>Skills</h5>
-					<p>Embedded C/C++, Linux, Python, SQL, Micro-controller tooling.</p>
+					<h5>{ i18n.T(ctx, "Skills") }</h5>
+					<p>{ i18n.T(ctx, "Embedded") } C/C++, Linux, Python, SQL.</p>
 				}
-				@InformationalAccordion("Application Engineer") {
-					<p>Worked as a developer of customer facing applications and frameworks for use with specialized authentication devices.</p>
-					<h5>Skills</h5>
+				@InformationalAccordion(i18n.T(ctx, "info.Application Engineer")) {
+					<p>
+						{ i18n.T(ctx, "info.applicationengineer") }
+					</p>
+					<h5>{ i18n.T(ctx, "Skills") }</h5>
 					<p>C#-based Dotnet Presentation Frameworks, Python, and Docker for cloud deployment</p>
 				}
-				@InformationalAccordion("Cloud AI/Machine Learning Technical Support Engineer") {
-					<p>Worked as a Technical Support engineer for Cloud based AI and IoT services. This was a customer facing role that revolved both user education as well as deep technical troubleshooting and collaboration to resolve any and every issue related to the service.</p>
-					<h5>Skills</h5>
-					<p>C, C#, Python, Javascript knowledge used for troubleshooting SDKs. Azure Networking, Docker/Kubernetes, LLM Prompt Engineering and Agentic AI development</p>
+				@InformationalAccordion(i18n.T(ctx, "info.Cloud AI/Machine Learning Technical Support Engineer")) {
+					<p>
+						{ i18n.T(ctx, "info.techsupportengineer") }
+					</p>
+					<h5>{ i18n.T(ctx, "Skills") }</h5>
+					<p>C, C#, Python, Javascript. Azure Networking, Docker/Kubernetes, { i18n.T(ctx, "LLMs, Prompt Engineering, Agentic AI") }</p>
 				}
 			</section>
 			<section>
 				<h2>Technologies</h2>
-				@Details("Programming Languages", []string{
+				@Details(i18n.T(ctx, "info.Programming Languages"), []string{
 					"C, C#, Golang, Rust, Python, SQL, HLSL",
 				})
-				@Details("Operating Systems", []string{
-					"Windows", "Linux (Redhat/Ubuntu/Arch)", "WSL (arch)",
+				@Details(i18n.T(ctx, "info.Operating Systems"), []string{
+					"Windows", "Linux (Redhat/Ubuntu/Arch)", "WSL (ubuntu/arch)",
 				})
-				@Details("Technology Stacks", []string{
+				@Details(i18n.T(ctx, "info.Technology Stacks"), []string{
 					"Games: Godot + Rust",
 					"Web: Golang + Templ + HTMX + HTML/CSS + SQL",
-					"CLI: Rust or Go",
+					"CLI: Rust, Go, Python",
 				})
-				@Details("Tools", []string{
-					"Neovim", "Git", "Github Actions", "Docker", "LLMs, Prompt Engineering, Agentic AI",
+				@Details(i18n.T(ctx, "info.Tools"), []string{
+					"Neovim", "Git", i18n.T(ctx, "Github Actions"), "Docker", i18n.T(ctx, "LLMs, Prompt Engineering, Agentic AI"),
 				})
 			</section>
 		</div>

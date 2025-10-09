@@ -1,5 +1,25 @@
 jp:
-  Jacobsky is Apparently Typing: "ジェイコブスキは書いているみたい"
+  info:
+    intro_header: "始めまして、ジェイコブスキと申します。"
+    intro_body: 10年以上のキャリアを持つベテランエンジニアであり、幅広い技術と分野にわたる専門知識を有しています。
+    intro_projects: 自分の開発プロジェクトはこちらリンクでご覧ください。
+    firmwareengineer: ファームウェア開発を担当。職責は要件分析や、ソフトウェアの設計と開発、 リリーステスト設計。
+    embeddedengineer: プリンターファムウェア、特定のプリントの校正と画像処理の部門 に 配属。職責は要件分析、ソフトウェアの設計と開発、リリーステスト設計。
+    applicationengineer: 認証のアプリや、サービスを開発。ユーザ研修、サンプル、サービスなどの開発を担当
+    techsupportengineer: サポート窓口で Azure IoT や Machine Learning、AI サービスをサポート担当。テクニカルトラブルシューティングやデバッグ、開発部門との協業を担当。AI や IoT、Machine Learning など、セキュリティに関するお客様へのサービス関連アプリケーション開発を担当。
+    Prior Experience and Roles: 職歴
+    Programming Languages: "プログラミング言語"
+    Operating Systems: "オペレーティングシステム"
+    Technology Stacks: "技術スタック"
+    Tools: "ツール"
+    Firmware Device Engineer: ファームウェアデバイス開発エンジニア
+    Embedded Systems Engineer: 組み込みシステム開発エンジニア
+    Application Engineer: アプリケーション開発エンジニア
+    Cloud AI/Machine Learning Technical Support Engineer: クラウドAI/Machine Learningテクニカルサポートエンジニア
+  Embedded: 組み込み
+  Hire Me: "名刺"
+  Submit: 提出
+  Cancel: キャンセル
   Home: "ホーム"
   Scout Me: "スカウトの連絡"
   About Me: "私につい "
@@ -28,13 +48,14 @@ jp:
   Contact me: "送信"
   Thank you!: "ご連絡いただき、誠にありがとうございます！"
   I will do my best to reach out to you as soon as I have a chance to review it!: "私はレビューしてから、すぐお返事します！"
-  contact_discription: TODO - Currently, I am open to being contacted regarding open positions if you think my skills match your company. Please fill out the following form
-  OfficialCompanyName: Company Co, Ltd.
+  contact_discription: 私にスカウト希望したい方は下記のフォームでご連絡いただきいたら、幸いです。
+  OfficialCompanyName: 募集中株式会社
   I confirm that the above information is correct: 上記の情報は正しいと確認しました。
   Frontend Development: フロントエンド開発
   Embedded/Firmware Development Engineer: ファームウェア開発
   Systems Engineering: システム開発
-  Other (please note in the Brief description): Other (please note in the Brief description)
-  introduction: >2
-    TODO: Translate
-    I am a Software engineering with a wide array of experience professionally. I am located in Japan and am always open to hearing about opportunies. Please feel free to contact me if you think I'd be a good fit for your team using the Scout link above.
+  Other (please note in the Brief description): 他
+  Github Actions: Github アクション
+  LLMs, Prompt Engineering, Agentic AI: LLM、プロムプト開発、エージェンティックＡＩ
+  
+  This site is powered by: 下記のツールで作成された

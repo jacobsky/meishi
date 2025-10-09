@@ -1,5 +1,26 @@
 en:
-  Jacobsky is Apparently Typing: "Jacobsky is Apparently Typing"
+  info:
+    intro_header: "Nice to meet you, I am Jacobsky"
+    intro_body: I am a Veteran Engineer with expertise across a wide array of technologies and discplines over a career that spans more than 10 years.
+    intro_projects: My personal projects can be found on 
+    firmwareengineer: Worked as a junior level engineer for various embedded systems ranging from localized battery management systems to control the reliability of charging and discharing, building and configuring an embedded Web-based UI for Management Observability and logging.
+    embeddedengineer: Worked as a mid-level engineer for Printer technology including the firmware of printheads, internal print engine reliability and implementing a hardware abstraction layer for reliability testing. Built internal tooling for actively tracking and documenting feature flags utilized by individual device SKUs.
+    applicationengineer: Worked as a developer of customer facing applications and frameworks for use with specialized authentication devices.
+    techsupportengineer: Worked as a Technical Support engineer for Cloud based AI and IoT services. This was a customer facing role that revolved both user education as well as deep technical troubleshooting and collaboration to resolve any and every issue related to the service.
+    Programming Languages: "Programming Languages"
+    Operating Systems: "Operating Systems"
+    Technology Stacks: "Technology Stacks"
+    Tools: "Tools"
+    Firmware Device Engineer: Firmware Device Engineer
+    Prior Experience and Roles: Prior Experience and Roles
+    Embedded Systems Engineer: Embedded Systems Engineer
+    Application Engineer: Application Engineer
+    Cloud AI/Machine Learning Technical Support Engineer: Cloud AI/Machine Learning Technical Support Engineer
+
+  Embedded: Embedded
+  Hire Me: "Hire Me"
+  Submit: Submit
+  Cancel: Cancel
   Home: "Home"
   Scout Me: "Scout Me"
   About Me: "About Me"
@@ -28,7 +49,7 @@ en:
   Contact me: "Contact me"
   Thank you!: "Thank you!"
   I will do my best to reach out to you as soon as I have a chance to review it!: "I will do my best to reach out to you as soon as I have a chance to review it!"
-  contact_discription: Currently, I am open to being contacted regarding open positions if you think my skills match your company. Please fill out the following form
+  contact_discription: If you would like to contact me regarding employment opportunities, please fill out this form and I will do my best to get back to you as soon as I can.
   OfficialCompanyName: Company Co, Ltd.
   I confirm that the above information is correct: Please confirm that the above information is correct before sending.
   Frontend Development: Frontend Development
@@ -36,3 +57,6 @@ en:
   Systems Engineering: Systems Engineering
   Other (please note in the Brief description): Other (please note in the Brief description)
   introduction: I am a Software engineering with a wide array of experience professionally. I am located in Japan and am always open to hearing about opportunies. Please feel free to contact me if you think I'd be a good fit for your team using the Scout link above.
+  Github Actions: Github Actions
+  LLMs, Prompt Engineering, Agentic AI: LLMs, Prompt Engineering, Agentic AI
+  This site is powered by: This site is powered by 

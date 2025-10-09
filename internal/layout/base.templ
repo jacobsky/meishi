@@ -47,7 +47,7 @@ templ NavLink(label, link, locale string) {
 templ Nav() {
 	<nav class="container" style="position: sticky">
 		<ul>
-			<strong>Apparently Typing</strong>
+			<strong>{ i18n.T(ctx, "Hire Me") }</strong>
 		</ul>
 		<ul>
 			@NavLink("Home", "/", string(i18n.GetLocale(ctx).Code()))
@@ -83,9 +83,13 @@ templ Layout(title string) {
 
 templ Footer() {
 	<footer class="container">
+		<header>{ i18n.T(ctx, "This site is powered by") }</header>
 		<p>
-			This site is powered by <a href="https://go.dev/">golang</a> and <a href="https://github.com/a-h/templ">templ</a> on the backend;
-			<a href="https://htmx.org/">HTMX</a> and <a href="https://alpinejs.dev/">alpinejs</a> on the frontend; and styled using <a href="https://picocss.com">picocss.</a>
+			<a href="https://go.dev/">golang</a>,
+			<a href="https://github.com/a-h/templ">templ</a>,
+			<a href="https://htmx.org/">HTMX</a>,
+			<a href="https://alpinejs.dev/">alpinejs</a>,
+			<a href="https://picocss.com">picocss.</a>,
 		</p>
 		<p>Copyright (c) 2025 Jacobsky. All Rights Reserved.</p>
 	</footer>
