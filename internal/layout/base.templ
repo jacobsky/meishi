@@ -22,26 +22,20 @@ templ Head(title string) {
 }
 
 templ Theme() {
-	<template data-x x-if="theme=='light'">
-		<button data-x @click="if ( theme == 'light' ) { theme='dark'} else { theme = 'light' }">
-			月
-		</button>
-	</template>
-	<template data-x x-if="theme=='dark'">
-		<button data-x @click="if ( theme == 'light' ) { theme='dark'} else { theme = 'light' }">
-			日
-		</button>
-	</template>
+	<button
+		data-x
+		@click="if ( theme == 'light' ) { theme='dark'} else { theme = 'light' }"
+		x-text="theme == 'light' ?  '月' : '日'"
+	></button>
 }
 
 // Creates the component used to toggle the language between english and japanese
 templ Language() {
-	<template x-data x-if="window.location.href.match('/jp/')">
-		<button @click="window.location.href='/en/';">EN</button>
-	</template>
-	<template x-data x-if="window.location.href.match('/en/')">
-		<button @click="window.location.href='/jp/';">日本</button>
-	</template>
+	<button
+		x-data
+		@click="window.location.href = window.location.href.includes('/en/') ? '/jp/' : '/en/'"
+		x-text="window.location.href.includes('/en/') ? '日本' : 'EN'"
+	></button>
 }
 
 templ NavLink(label, link, locale string) {
