@@ -104,18 +104,24 @@ templ Contact(data *ContactModel, errs z.ZogIssueMap) {
 					@inputComponent("link", i18n.T(ctx, "Link to Position Info"), "link", data.Link, "http://www.example.com", errs)
 				}
 				@layout.FormCSRF()
-				<label for="confirmation">{ i18n.T(ctx, "I confirm that the above information is correct") } </label>
-				// TODO: Update this to double check the validation.
-				<input role="switch" type="checkbox" id="confirmation" x-model="confirmed"/>
-				// TODO: Show some kind of proxy for the actual sending of the email (it takes a bit of time)
-				<input
-					x-bind:disabled="!confirmed"
-					type="submit"
-					value={ i18n.T(ctx, "Contact me") }
-				/>
+				<button type="button" x-data @click="confirmed=true">{ i18n.T(ctx, "Submit") }</button>
+				@ConfirmDialog()
 			</fieldset>
 		</form>
 	}
+}
+
+templ ConfirmDialog() {
+	<dialog x-data :open="confirmed">
+		<article>
+			<h2>Are you sure you wish to send this email?</h2>
+			<p>Please confirm the details related to the position are correct</p>
+			<footer>
+				<button x-data @click="confirmed=false" class="secondary">{ i18n.T(ctx, "Cancel") } </button>
+				<input type="submit" value={ i18n.T(ctx, "Contact me") }/>
+			</footer>
+		</article>
+	</dialog>
 }
 
 templ ContactComplete() {
