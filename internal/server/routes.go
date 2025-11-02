@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"recruitme/internal/routes"
 	"recruitme/internal/routes/contact"
+	"recruitme/internal/routes/health"
 	"strings"
 
 	"github.com/a-h/templ"
@@ -32,6 +33,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	rootmux.Handle("/assets/", fileServer)
 	rootmux.Handle("/", http.RedirectHandler("/en/", http.StatusPermanentRedirect))
+	rootmux.Handle("/healthcheck", health.NewHandler())
 	rootmux.Handle("/en/", http.StripPrefix("/en", webmux))
 	rootmux.Handle("/jp/", http.StripPrefix("/jp", webmux))
 
