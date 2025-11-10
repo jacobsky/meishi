@@ -23,8 +23,6 @@ func (s *Server) RegisterRoutes() http.Handler {
 	// Register routes
 	webmux := http.NewServeMux()
 	webmux.Handle("/", templ.Handler(routes.Home()))
-	// TODO: Add micro blog functionality
-	// mux.Handle("/blog", templ.Handler(routes.BlogPost()))
 	webmux.Handle("/contact", contact.NewHandler())
 	webmux.Handle("GET /contactcomplete", contact.NewHandler())
 
