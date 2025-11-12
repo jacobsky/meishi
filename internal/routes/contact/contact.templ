@@ -9,8 +9,9 @@ import (
 
 templ inputComponent(inputType, inputLabel, inputName, inputValue, placeholder string, inputErr z.ZogIssueMap) {
 	<div id={ fmt.Sprintf("%v_parent", inputName) }>
-		<label for={ inputName }>{ inputLabel }</label>
+		<label class="label" for={ inputName }>{ inputLabel }</label>
 		<input
+			class="input w-full validator"
 			required
 			type={ inputType }
 			name={ inputName }
@@ -30,14 +31,14 @@ templ inputComponent(inputType, inputLabel, inputName, inputValue, placeholder s
 			}
 		/>
 		if e, ok := inputErr[inputName]; ok {
-			<small id={ inputName + "validation-helper" }>{ e[0].Message }</small>
+			<small class="validator-hint" id={ inputName + "validation-helper" }>{ e[0].Message }</small>
 		}
 	</div>
 }
 
 templ comboBox(name string, label string, levels []string) {
-	<label for={ name }>{ label }</label>
-	<select name={ name } id={ name } :readonly="confirmed">
+	<label class="label" for={ name }>{ label }</label>
+	<select class="select w-full" name={ name } id={ name } :readonly="confirmed">
 		for _, level := range levels {
 			<option value={ level }>{ level }</option>
 		}
@@ -46,79 +47,82 @@ templ comboBox(name string, label string, levels []string) {
 
 templ Contact(data *ContactModel, errs z.ZogIssueMap) {
 	@layout.Layout("Contact Me") {
-		<h2>Contact me</h2>
-		<form
-			method="post"
-			hx-post={ "/" + i18n.GetLocale(ctx).Code() + "/contact" }
-			hx-target="closest main"
-			hx-select="#content"
-			hx-swap="outerHTML"
-			hx-boost="true"
-			x-data="{confirmed: false, submitting: true}"
-		>
-			<fieldset>
-				<legend>
-					<p>{ i18n.T(ctx, "contact_discription") }</p>
-				</legend>
-				@templ.Fragment("name") {
-					@inputComponent("text",
-						i18n.T(ctx, "Your Name"),
-						"name",
-						data.Name,
-						i18n.T(ctx, "Your Name"),
-						errs,
+		<div class="w-xs md:w-md lg:w-xl border justify-center border-base-300 rounded-box border p-4">
+			<h2 class="text-3xl text-base-content p-4">Contact me</h2>
+			<div class="divider"></div>
+			<p class="text-lg text-base-content p-4">{ i18n.T(ctx, "contact_discription") }</p>
+			<div class="divider"></div>
+			<form
+				method="post"
+				hx-post={ "/" + i18n.GetLocale(ctx).Code() + "/contact" }
+				hx-target="closest main"
+				hx-select="#content"
+				hx-swap="outerHTML"
+				hx-boost="true"
+				x-data="{confirmed: false, submitting: true}"
+			>
+				<fieldset class="fieldset text-xl ">
+					@templ.Fragment("name") {
+						@inputComponent("text",
+							i18n.T(ctx, "Your Name"),
+							"name",
+							data.Name,
+							i18n.T(ctx, "Your Name"),
+							errs,
+						)
+					}
+					@templ.Fragment("email") {
+						@inputComponent("email",
+							i18n.T(ctx, "Your Email Address"),
+							"email",
+							data.Email,
+							"email@example.com",
+							errs,
+						)
+					}
+					@comboBox("level", "Level", []string{
+						i18n.T(ctx, "Junior"),
+						i18n.T(ctx, "Mid-level"),
+						i18n.T(ctx, "Senior"),
+					},
 					)
-				}
-				@templ.Fragment("email") {
-					@inputComponent("email",
-						i18n.T(ctx, "Your Email Address"),
-						"email",
-						data.Email,
-						"email@example.com",
-						errs,
+					@templ.Fragment("company") {
+						@inputComponent("text", i18n.T(ctx, "Company Name"), "company", data.Company, i18n.T(ctx,
+							"OfficialCompanyName"), errs)
+					}
+					@comboBox("position", i18n.T(ctx, "Position"), []string{
+						i18n.T(ctx, "Games Development"),
+						i18n.T(ctx, "Frontend Development"),
+						i18n.T(ctx, "Backend Development"),
+						i18n.T(ctx, "Application Development Engineer"),
+						i18n.T(ctx, "Embedded/Firmware Development Engineer"),
+						i18n.T(ctx, "Systems Engineering"),
+						i18n.T(ctx, "Other (please note in the Brief description)"),
+					},
 					)
-				}
-				@comboBox("level", "Level", []string{
-					i18n.T(ctx, "Junior"),
-					i18n.T(ctx, "Mid-level"),
-					i18n.T(ctx, "Senior"),
-				},
-				)
-				@templ.Fragment("company") {
-					@inputComponent("text", i18n.T(ctx, "Company Name"), "company", data.Company, i18n.T(ctx, "OfficialCompanyName"), errs)
-				}
-				@comboBox("position", i18n.T(ctx, "Position"), []string{
-					i18n.T(ctx, "Games Development"),
-					i18n.T(ctx, "Frontend Development"),
-					i18n.T(ctx, "Backend Development"),
-					i18n.T(ctx, "Application Development Engineer"),
-					i18n.T(ctx, "Embedded/Firmware Development Engineer"),
-					i18n.T(ctx, "Systems Engineering"),
-					i18n.T(ctx, "Other (please note in the Brief description)"),
-				},
-				)
-				@templ.Fragment("description") {
-					@inputComponent("text", i18n.T(ctx, "Brief Description"), "description", data.Description, "", errs)
-				}
-				@templ.Fragment("link") {
-					@inputComponent("link", i18n.T(ctx, "Link to Position Info"), "link", data.Link, "http://www.example.com", errs)
-				}
-				@layout.FormCSRF()
-				<button type="button" x-data @click="confirmed=true">{ i18n.T(ctx, "Submit") }</button>
-				@ConfirmDialog()
-			</fieldset>
-		</form>
+					@templ.Fragment("description") {
+						@inputComponent("text", i18n.T(ctx, "Brief Description"), "description", data.Description, "", errs)
+					}
+					@templ.Fragment("link") {
+						@inputComponent("link", i18n.T(ctx, "Link to Position Info"), "link", data.Link, "http://www.example.com", errs)
+					}
+					@layout.FormCSRF()
+					<button class="btn" type="button" x-data @click="confirmed=true">{ i18n.T(ctx, "Submit") }</button>
+					@ConfirmDialog()
+				</fieldset>
+			</form>
+		</div>
 	}
 }
 
 templ ConfirmDialog() {
-	<dialog x-data :open="confirmed">
-		<article>
-			<h2>Are you sure you wish to send this email?</h2>
-			<p>Please confirm the details related to the position are correct</p>
-			<footer>
-				<button x-data @click="confirmed=false" class="secondary">{ i18n.T(ctx, "Cancel") } </button>
-				<input type="submit" value={ i18n.T(ctx, "Contact me") }/>
+	<dialog class="modal" x-data :open="confirmed">
+		<article class="modal-box">
+			<h2 class="text-lg font-bold">Are you sure you wish to send this email?</h2>
+			<p class="py-4">Please confirm the details related to the position are correct</p>
+			<footer class="modal-action">
+				<button class="btn" x-data @click="confirmed=false" class="secondary">{ i18n.T(ctx, "Cancel") } </button>
+				<input class="btn" type="submit" value={ i18n.T(ctx, "Contact me") }/>
 			</footer>
 		</article>
 	</dialog>

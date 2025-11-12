@@ -1,100 +1,100 @@
 package routes
 
 import (
-"github.com/invopop/ctxi18n/i18n"
-layout "recruitme/internal/layout"
+	"github.com/invopop/ctxi18n/i18n"
+	layout "recruitme/internal/layout"
 )
 
 templ InformationalAccordion(title string, description ...string) {
-<details class="w-full collapse collapse-plus bg-base-100 border border-base-300">
-    <summary class="collapse-title font-semibold">
-        { title }
-    </summary>
-    <div class="collapse-content prose">
-        { children... }
-    </div>
-</details>
+	<details class="w-full collapse collapse-plus bg-base-100 border border-base-300">
+		<summary class="collapse-title font-semibold bg-base-200">
+			{ title }
+		</summary>
+		<div class="collapse-content prose">
+			{ children... }
+		</div>
+	</details>
 }
 
 templ Details(summary string, list_items []string) {
-<details class="w-full collapse collapse-plus bg-base-100 border border-base-300">
-    <summary class="w-full collapse-title font-semibold">{ summary }</summary>
-    <div class="collapse-content prose">
-        for _, item := range list_items {
-        { item }
-        <br />
-        }
-    </div>
-</details>
+	<details class="w-full collapse collapse-plus bg-base-100 border border-base-300">
+		<summary class="w-full collapse-title font-semibold bg-base-200">{ summary }</summary>
+		<div class="collapse-content prose">
+			for _, item := range list_items {
+				{ item }
+				<br/>
+			}
+		</div>
+	</details>
 }
 
 templ Home() {
-@layout.Layout("Home") {
-<section class="prose">
-    <h2>{ i18n.T(ctx, "info.intro_header") }</h2>
-    <p>
-        { i18n.T(ctx, "info.intro_body") }
-    </p>
-    <p>
-        { i18n.T(ctx, "info.intro_projects") }
-        <a href="https://www.github.com/jacobsky">github</a>.
-    </p>
-</section>
-<div class="divider"></div>
-<div class="w-full grid grid-cols-1 md:grid-cols-2 gap-8">
-    <section class=" prose">
-        <h2>{ i18n.T(ctx, "info.Prior Experience and Roles") }</h2>
-        @InformationalAccordion(
-        i18n.T(ctx, "info.Firmware Device Engineer"),
-        ) {
-        <p>
-            { i18n.T(ctx, "info.firmwareengineer") }
-        </p>
-        <h5>{ i18n.T(ctx, "Skills") }</h5>
-        <p>{ i18n.T(ctx, "Embedded") } C/C++, Linux, Nginx, Sqlite, Php stacp, Dotnet.</p>
-        }
-        @InformationalAccordion(
-        i18n.T(ctx, "info.Embedded Systems Engineer"),
-        ) {
-        <p>
-            { i18n.T(ctx, "info.embeddedengineer") }
-        </p>
-        <h5>{ i18n.T(ctx, "Skills") }</h5>
-        <p>{ i18n.T(ctx, "Embedded") } C/C++, Linux, Python, SQL.</p>
-        }
-        @InformationalAccordion(i18n.T(ctx, "info.Application Engineer")) {
-        <p>
-            { i18n.T(ctx, "info.applicationengineer") }
-        </p>
-        <h5>{ i18n.T(ctx, "Skills") }</h5>
-        <p>C#-based Dotnet Presentation Frameworks, Python, and Docker for cloud deployment</p>
-        }
-        @InformationalAccordion(i18n.T(ctx, "info.Cloud AI/Machine Learning Technical Support Engineer")) {
-        <p>
-            { i18n.T(ctx, "info.techsupportengineer") }
-        </p>
-        <h5>{ i18n.T(ctx, "Skills") }</h5>
-        <p>C, C#, Python, Javascript.</p>
-        <p>Azure Networking, Docker/Kubernetes, { i18n.T(ctx, "LLMs, Prompt Engineering, Agentic AI") }</p>
-        }
-    </section>
-    <section class="prose">
-        <h2>Technologies</h2>
-        @Details(i18n.T(ctx, "info.Programming Languages"), []string{
-        "C, C#, Golang, Rust, Python, SQL, HLSL",
-        })
-        @Details(i18n.T(ctx, "info.Operating Systems"), []string{
-        "Windows", "Linux (Redhat/Ubuntu/Arch)", "WSL (ubuntu/arch)",
-        })
-        @Details(i18n.T(ctx, "info.Technology Stacks"), []string{
-        "Games: Godot + Rust",
-        "Web: Golang + Templ + HTMX + HTML/CSS + SQL",
-        "CLI: Rust, Go, Python",
-        })
-        @Details(i18n.T(ctx, "info.Tools"), []string{
-        "Neovim", "Git", i18n.T(ctx, "Github Actions"), "Docker", i18n.T(ctx, "LLMs, Prompt Engineering, Agentic AI"),
-        })
-    </section>
-</div>
-}
+	@layout.Layout("Home") {
+		<section class="prose">
+			<h2>{ i18n.T(ctx, "info.intro_header") }</h2>
+			<p>
+				{ i18n.T(ctx, "info.intro_body") }
+			</p>
+			<p>
+				{ i18n.T(ctx, "info.intro_projects") }
+				<a href="https://www.github.com/jacobsky">github</a>.
+			</p>
+		</section>
+		<div class="divider"></div>
+		<div class="w-full grid grid-cols-1 md:grid-cols-2 gap-8">
+			<section class=" prose">
+				<h2>{ i18n.T(ctx, "info.Prior Experience and Roles") }</h2>
+				@InformationalAccordion(
+					i18n.T(ctx, "info.Firmware Device Engineer"),
+				) {
+					<p>
+						{ i18n.T(ctx, "info.firmwareengineer") }
+					</p>
+					<h5>{ i18n.T(ctx, "Skills") }</h5>
+					<p>{ i18n.T(ctx, "Embedded") } C/C++, Linux, Nginx, Sqlite, Php stacp, Dotnet.</p>
+				}
+				@InformationalAccordion(
+					i18n.T(ctx, "info.Embedded Systems Engineer"),
+				) {
+					<p>
+						{ i18n.T(ctx, "info.embeddedengineer") }
+					</p>
+					<h5>{ i18n.T(ctx, "Skills") }</h5>
+					<p>{ i18n.T(ctx, "Embedded") } C/C++, Linux, Python, SQL.</p>
+				}
+				@InformationalAccordion(i18n.T(ctx, "info.Application Engineer")) {
+					<p>
+						{ i18n.T(ctx, "info.applicationengineer") }
+					</p>
+					<h5>{ i18n.T(ctx, "Skills") }</h5>
+					<p>C#-based Dotnet Presentation Frameworks, Python, and Docker for cloud deployment</p>
+				}
+				@InformationalAccordion(i18n.T(ctx, "info.Cloud AI/Machine Learning Technical Support Engineer")) {
+					<p>
+						{ i18n.T(ctx, "info.techsupportengineer") }
+					</p>
+					<h5>{ i18n.T(ctx, "Skills") }</h5>
+					<p>C, C#, Python, Javascript.</p>
+					<p>Azure Networking, Docker/Kubernetes, { i18n.T(ctx, "LLMs, Prompt Engineering, Agentic AI") }</p>
+				}
+			</section>
+			<section class="prose">
+				<h2>Technologies</h2>
+				@Details(i18n.T(ctx, "info.Programming Languages"), []string{
+					"C, C#, Golang, Rust, Python, SQL, HLSL",
+				})
+				@Details(i18n.T(ctx, "info.Operating Systems"), []string{
+					"Windows", "Linux (Redhat/Ubuntu/Arch)", "WSL (ubuntu/arch)",
+				})
+				@Details(i18n.T(ctx, "info.Technology Stacks"), []string{
+					"Games: Godot + Rust",
+					"Web: Golang + Templ + HTMX + HTML/CSS + SQL",
+					"CLI: Rust, Go, Python",
+				})
+				@Details(i18n.T(ctx, "info.Tools"), []string{
+					"Neovim", "Git", i18n.T(ctx, "Github Actions"), "Docker", i18n.T(ctx, "LLMs, Prompt Engineering, Agentic AI"),
+				})
+			</section>
+		</div>
+	}
 }
