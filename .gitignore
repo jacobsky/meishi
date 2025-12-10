@@ -37,4 +37,4 @@ main
 internal/server/assets/css/output.css
 node_modules/
 tailwindcss
-
+submodules/

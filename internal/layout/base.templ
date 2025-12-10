@@ -3,7 +3,7 @@ package layout
 import (
 	"fmt"
 	"github.com/invopop/ctxi18n/i18n"
-	"time"
+	appcomponent "github.com/jacobsky/apparently-typing/pkg/components"
 )
 
 templ Head(title string) {
@@ -20,39 +20,6 @@ templ Head(title string) {
 	</head>
 }
 
-templ Theme(theme string) {
-	<label class="flex cursor-pointer gap-2">
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="20"
-			height="20"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			stroke-width="2"
-			stroke-linecap="round"
-			stroke-linejoin="round"
-		>
-			<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-		</svg>
-		<input type="checkbox" value={ theme } class="toggle theme-controller"/>
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="20"
-			height="20"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			stroke-width="2"
-			stroke-linecap="round"
-			stroke-linejoin="round"
-		>
-			<circle cx="12" cy="12" r="5"></circle>
-			<path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path>
-		</svg>
-	</label>
-}
-
 // Creates the component used to toggle the language between english and japanese
 templ Language() {
 	<button
@@ -62,31 +29,28 @@ templ Language() {
 	></button>
 }
 
+templ TitleBar() {
+	<a class="text-xl text-nowrap link link-hover" href="https://apparently-typ.ing">
+		> { i18n.T(ctx, "logo") }
+	</a>
+}
+
 templ NavLink(label, link, locale string) {
-	<li>
-		<a class="secondary" id={ locale + link } href={ fmt.Sprintf("/%v/%v", locale, link) } hx-boost="true">
-			{ i18n.T(ctx,
-        label) }
-		</a>
-	</li>
+	<a class="secondary" id={ locale + link } href={ fmt.Sprintf("/%v/%v", locale, link) } hx-boost="true">
+		{ i18n.T(ctx, label) }
+	</a>
 }
 
 templ Nav() {
-	<div class="sticky top-0 navbar bg-base-300 text-base-content shadow-sm">
-		<div class="flex-1">
-			<strong>> { i18n.T(ctx, "logo") }</strong>
-		</div>
-		<ul tabindex="-1" class="menu menu-horizontal px-1">
-			@NavLink("Home", "/", string(i18n.GetLocale(ctx).Code()))
-			@NavLink("Scout Me", "/contact", string(i18n.GetLocale(ctx).Code()))
-			<li>
-				@Language()
-			</li>
-			<li>
-				@Theme("cupcake")
-			</li>
-		</ul>
-	</div>
+	@appcomponent.Nav(
+		TitleBar(),
+		[]templ.Component{
+			NavLink("Home", "/", string(i18n.GetLocale(ctx).Code())),
+			NavLink("Scout Me", "/contact", string(i18n.GetLocale(ctx).Code())),
+			Language(),
+			appcomponent.ThemeToggler("cupcake"),
+		},
+	)
 }
 
 templ Layout(title string) {
@@ -100,29 +64,9 @@ templ Layout(title string) {
 					{ children... }
 				</div>
 			</main>
-			@Footer()
+			@appcomponent.Footer()
 		</body>
 	</html>
-}
-
-templ Footer() {
-	<footer class="bottom-0 footer footer-horizontal footer-center bg-base-100 text-base-content items-center py-4">
-		<nav class="grid grid-flow-col gap-4">
-			<p>{ i18n.T(ctx, "This site is powered by") }</p>
-			<a class="link link-hover" href="https://go.dev/">go</a>
-			<a class="link link-hover" href="https://github.com/a-h/templ">templ</a>
-			<a class="link link-hover" href="https://htmx.org/">HTMX</a>
-			<a class="link link-hover" href="https://alpinejs.dev/">alpinejs</a>
-			<a class="link link-hover" href="https://daisyui.com">daisyui</a>
-		</nav>
-		<aside>
-			<p>
-				> An Apparently Typing Project
-				<br/>
-				Copyright (c) { time.Now().Format("2006") } jacobsky. All Rights Reserved.
-			</p>
-		</aside>
-	</footer>
 }
 
 templ FormCSRF() {
